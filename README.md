@@ -63,28 +63,37 @@ The skill uses `themes/light/` by default. Users can select another theme by nam
 
 ## Component generation
 
-Generate platform styling files into a target project root:
+Generate one platform styling file into a target project root:
 
 ```bash
-python3 scripts/generate_components.py <project-root>
+python3 scripts/generate_components.py <project-root> --platform typescript --theme light
 ```
 
-This writes:
+Available platforms:
 
-- `styling.gen.swift`
-- `styling.gen.kt`
-- `styling.gen.ts`
+- `swift`: writes `styling.gen.swift`
+- `kotlin`: writes `styling.gen.kt`
+- `typescript`: writes `styling.gen.ts`
+
+The generator reads the selected theme directory, validates the required theme fields, and renders the selected platform file from that theme's `CONFIG.md`, `COLOR_SPEC.md`, and `COMPONENTS.md`.
+
+Generate another theme with:
+
+```bash
+python3 scripts/generate_components.py <project-root> --platform swift --theme dark
+python3 scripts/generate_components.py <project-root> --platform kotlin --theme oms
+```
 
 Use a custom Kotlin package name when needed:
 
 ```bash
-python3 scripts/generate_components.py <project-root> --kotlin-package com.example.designsystem
+python3 scripts/generate_components.py <project-root> --platform kotlin --theme light --kotlin-package com.example.designsystem
 ```
 
 Check whether generated files are stale:
 
 ```bash
-python3 scripts/generate_components.py <project-root> --check
+python3 scripts/generate_components.py <project-root> --platform typescript --theme light --check
 ```
 
 ## Example app

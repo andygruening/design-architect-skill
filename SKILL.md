@@ -7,7 +7,7 @@ description: Generate design-system UI components, build new design-system-style
 
 ## Source
 
-Use this skill to generate and apply the selected design-system theme through `styling.gen.swift`, `styling.gen.kt`, and `styling.gen.ts`. After generation, those generated styling files are the implementation source for tokens, component wrappers, variants, recipes, and interaction states.
+Use this skill to generate and apply the selected design-system theme through the platform-specific styling file: `styling.gen.swift` for iOS, `styling.gen.kt` for Android, and `styling.gen.ts` for React TypeScript web. After generation, that generated styling file is the implementation source for tokens, component wrappers, variants, recipes, and interaction states.
 
 Use the `light` theme configuration by default. If the user names another theme configuration, such as `use oms`, read `CONFIG.md`, `COLOR_SPEC.md`, and `COMPONENTS.md` from that configuration directory instead.
 
@@ -75,20 +75,20 @@ Say `go ahead` to integrate all changes, or tell me which proposed changes to do
    - **Design**: read `design/DESIGN_WEB.md` for web projects and `design/DESIGN_MOBILE.md` for iOS or Android projects. If a task covers multiple platforms, read each matching file under `design/`. Treat the matching design instructions as mandatory. Analyze what each existing or proposed page/screen is doing, verify whether each page/screen aligns with the required design patterns, and propose structural changes based on required flows and page/screen patterns. Always verify that the app has a separate `Home`, landing, welcome, or introduction page/screen that introduces and sells the app before the first real product workflow, with a clear primary CTA that routes to the first real page/screen. Check whether authentication requires sign-in/sign-up/recovery/verification pages or screens, where the main content should live, which dashboard/detail/list/form/settings pages or screens are needed, and whether navigation matches the target platform. Check every visible button, link, nav item, CTA, footer link, toolbar action, tab, list row, and in-app route target; if it points to a page/screen or flow that does not exist, propose integrating that missing page/screen or removing/retargeting the control when the destination should not exist. Evaluate whether the app exposes debug, implementation, or environment data in the UI, such as `server is ready`, raw API responses, localhost URLs, stack traces, test IDs, sandbox mode labels, mock/dev banners, console output, feature-flag names, or similar non-product information; propose removing or replacing it with product-appropriate states unless the user explicitly requires an environment indicator.
 5. Make proposals for both categories based on this skill's instructions, even when one category has no major issues. State when no changes are needed for a category. Keep proposals decisive: do not include option lists, unresolved alternatives, or vague recommendations. If several valid approaches exist, choose one and propose that specific implementation.
 6. Wait for the user to approve the proposal before running generators, editing files, or integrating changes.
-7. For new app and existing project update modes, run the bundled generator for root styling files only after approval:
+7. For new app and existing project update modes, run the bundled generator only for the requested or detected platform after approval. Always pass `--platform` and the selected theme with `--theme`; use `light` when the user did not name a theme:
 
    ```bash
-   python3 /path/to/design-architect/scripts/generate_components.py <project-root>
+   python3 /path/to/design-architect/scripts/generate_components.py <project-root> --platform <swift|kotlin|typescript> --theme <theme-name>
    ```
 
-8. Review the generated files:
+8. Review the generated file for the selected platform:
    - `styling.gen.swift`: SwiftUI tokens and reusable iOS components.
    - `styling.gen.kt`: Jetpack Compose/Kotlin tokens and reusable Android components.
    - `styling.gen.ts`: TypeScript tokens, typed variants, and React-friendly component recipes for web parity.
 9. If the user explicitly requires a different package name, rerun with:
 
    ```bash
-   python3 /path/to/design-architect/scripts/generate_components.py <project-root> --kotlin-package com.example.designsystem
+   python3 /path/to/design-architect/scripts/generate_components.py <project-root> --platform kotlin --theme <theme-name> --kotlin-package com.example.designsystem
    ```
 
 10. Keep generated file names stable. `styling.gen.ts` is the TypeScript design-token/component-recipe output; Kotlin implementation belongs in `styling.gen.kt`.
@@ -120,6 +120,13 @@ Say `go ahead` to integrate all changes, or tell me which proposed changes to do
   - **<name>**: <description>
   ```
 - To create a new theme configuration, read `themes/THEME_INTERFACE.md`, copy `themes/light/COLOR_SPEC.md`, `themes/light/CONFIG.md`, and `themes/light/COMPONENTS.md` into `themes/<new-name>/`, then update the copied files based on the user's theme specifications. Keep `CONFIG.md` frontmatter concise and include only `name` and `description`.
+- To generate components for a selected theme, run:
+
+  ```bash
+  python3 /path/to/design-architect/scripts/generate_components.py <project-root> --platform <swift|kotlin|typescript> --theme <theme-name>
+  ```
+
+  The generator reads `themes/<theme-name>/CONFIG.md`, `themes/<theme-name>/COLOR_SPEC.md`, and `themes/<theme-name>/COMPONENTS.md`, validates required fields from `themes/THEME_INTERFACE.md`, and renders only the selected platform file from that theme. If the user does not name a theme, pass `--theme light`.
 
 ## Product Rules
 
@@ -147,7 +154,7 @@ Say `go ahead` to integrate all changes, or tell me which proposed changes to do
 After generation, run:
 
 ```bash
-python3 /path/to/design-architect/scripts/generate_components.py <project-root> --check
+python3 /path/to/design-architect/scripts/generate_components.py <project-root> --platform <swift|kotlin|typescript> --theme <theme-name> --check
 ```
 
 Use available local build tools when present:
