@@ -1,18 +1,15 @@
-import { StrictMode, useMemo, useState } from "react";
+import { StrictMode, useState } from "react";
 import { createRoot } from "react-dom/client";
-import { designOptions } from "./generated/designs.gen";
 import { CodexMarketplaceApp } from "./generated/pages/marketplace/codex/main";
 import { WebMarketplaceApp } from "./generated/pages/marketplace/web/main";
 import { ThemeProvider, useTheme } from "./generated/themes/ThemeContext";
 import "./styles.css";
 
+const designOptions = ["Codex", "Web"] as const;
+
 function App() {
   const { selectedThemeId, setSelectedThemeId, themeOptions, themeVars } = useTheme();
-  const [selectedDesignId, setSelectedDesignId] = useState<string>(designOptions[1].id);
-  const activeDesign = useMemo(
-    () => designOptions.find((option) => option.id === selectedDesignId) ?? designOptions[1],
-    [selectedDesignId],
-  );
+  const [selectedDesign, setSelectedDesign] = useState<(typeof designOptions)[number]>("Web");
 
   return (
     <main className="app" style={themeVars}>
@@ -38,12 +35,14 @@ function App() {
             <label className="selector">
               <span>Design</span>
               <select
-                value={selectedDesignId}
-                onChange={(event: { target: { value: string } }) => setSelectedDesignId(event.target.value)}
+                value={selectedDesign}
+                onChange={(event: { target: { value: (typeof designOptions)[number] } }) =>
+                  setSelectedDesign(event.target.value)
+                }
               >
                 {designOptions.map((option) => (
-                  <option key={option.id} value={option.id}>
-                    {option.name}
+                  <option key={option} value={option}>
+                    {option}
                   </option>
                 ))}
               </select>
@@ -52,8 +51,7 @@ function App() {
         </div>
       </header>
 
-      {activeDesign.id === "codex" && <CodexMarketplaceApp />}
-      {activeDesign.id === "web" && <WebMarketplaceApp />}
+      {selectedDesign === "Web" ? <WebMarketplaceApp /> : <CodexMarketplaceApp />}
     </main>
   );
 }
