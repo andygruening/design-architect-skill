@@ -1,3 +1,8 @@
+---
+name: Web
+description: Mandatory design patterns for web pages, routes, states, navigation, layout frames, and production UI hygiene.
+---
+
 # Web Page Design
 
 This document defines mandatory design patterns for web pages.

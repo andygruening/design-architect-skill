@@ -1,19 +1,77 @@
-# Theme interface
+# Theme template
 
-Every directory under `themes/` is a theme configuration. Each theme must include:
+Use this template when creating or validating a theme configuration. Every directory under `themes/` is a theme configuration. Each theme must include:
 
-- `CONFIG.md`
-- `COLOR_SPEC.md`
-- `COMPONENTS.md`
+- `SPEC.md`
+- `theme.json`
 
-## CONFIG.md
+`theme.json` is the machine-readable source for generated platform files. `SPEC.md` is human-readable design guidance for agents and reviewers.
+
+## SPEC.md
 
 Required frontmatter fields:
 
 - `name`: Human-readable theme name.
 - `description`: One-sentence summary used when listing available themes.
 
-## COLOR_SPEC.md
+Required sections:
+
+- `Color spec`: Visual foundations in prose, including brand/accent, CTA, page/surface, border, text, semantic color, typography, icon, and motion rules.
+- `Components`: Component contracts in prose, including buttons, inputs, dropdowns, labels, badges, alerts, cards/panels, icon buttons, and status banner rules.
+
+## theme.json
+
+Required top-level fields:
+
+- `id`: Theme directory slug. Must match the directory name.
+- `name`: Human-readable theme name.
+- `description`: One-sentence summary used when listing available themes.
+- `typography`: Machine-readable type tokens.
+- `colors`: Machine-readable color tokens.
+- `components`: Machine-readable component flags.
+
+Required `typography` fields:
+
+- `fontFamily`: Preferred product UI font family.
+- `headingWeight`: Numeric heading font weight.
+- `bodyWeight`: Numeric body font weight.
+- `lineHeight`: Numeric line-height multiplier.
+
+Required `colors` fields:
+
+- `page`
+- `surface`
+- `secondarySurface`
+- `header`
+- `headerBorder`
+- `footer`
+- `primaryText`
+- `secondaryText`
+- `placeholderText`
+- `border`
+- `focusRing`
+- `brand`
+- `primaryButton`
+- `primaryButtonText`
+- `secondaryButton`
+- `secondaryButtonText`
+- `danger`
+- `dangerSoft`
+- `dangerText`
+- `success`
+- `successSoft`
+- `warning`
+- `warningSoft`
+- `info`
+- `infoSoft`
+
+Required `components` fields:
+
+- `usesBorders`: Boolean flag for whether generated components should render default borders.
+
+`theme.json` must conform to `themes/theme.schema.json`.
+
+## Color spec
 
 Required fields to implement:
 
@@ -30,7 +88,7 @@ Required fields to implement:
 - `Icons`: Icon family, stroke weight, sizes, and usage rules.
 - `Motion`: Hover, base, and modal/drawer timing rules.
 
-## COMPONENTS.md
+## Components
 
 Required component contracts to implement:
 

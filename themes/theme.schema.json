@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/design-architect/theme.schema.json",
+  "title": "Design Architect theme",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "name", "description", "typography", "colors", "components"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "typography": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["fontFamily", "headingWeight", "bodyWeight", "lineHeight"],
+      "properties": {
+        "fontFamily": { "type": "string", "minLength": 1 },
+        "headingWeight": { "type": "integer" },
+        "bodyWeight": { "type": "integer" },
+        "lineHeight": { "type": "number" }
+      }
+    },
+    "colors": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "page",
+        "surface",
+        "secondarySurface",
+        "header",
+        "headerBorder",
+        "footer",
+        "primaryText",
+        "secondaryText",
+        "placeholderText",
+        "border",
+        "focusRing",
+        "brand",
+        "primaryButton",
+        "primaryButtonText",
+        "secondaryButton",
+        "secondaryButtonText",
+        "danger",
+        "dangerSoft",
+        "dangerText",
+        "success",
+        "successSoft",
+        "warning",
+        "warningSoft",
+        "info",
+        "infoSoft"
+      ],
+      "properties": {
+        "page": { "$ref": "#/$defs/color" },
+        "surface": { "$ref": "#/$defs/color" },
+        "secondarySurface": { "$ref": "#/$defs/color" },
+        "header": { "$ref": "#/$defs/color" },
+        "headerBorder": { "$ref": "#/$defs/color" },
+        "footer": { "$ref": "#/$defs/color" },
+        "primaryText": { "$ref": "#/$defs/color" },
+        "secondaryText": { "$ref": "#/$defs/color" },
+        "placeholderText": { "$ref": "#/$defs/color" },
+        "border": { "$ref": "#/$defs/color" },
+        "focusRing": { "$ref": "#/$defs/color" },
+        "brand": { "$ref": "#/$defs/color" },
+        "primaryButton": { "$ref": "#/$defs/color" },
+        "primaryButtonText": { "$ref": "#/$defs/color" },
+        "secondaryButton": { "$ref": "#/$defs/color" },
+        "secondaryButtonText": { "$ref": "#/$defs/color" },
+        "danger": { "$ref": "#/$defs/color" },
+        "dangerSoft": { "$ref": "#/$defs/color" },
+        "dangerText": { "$ref": "#/$defs/color" },
+        "success": { "$ref": "#/$defs/color" },
+        "successSoft": { "$ref": "#/$defs/color" },
+        "warning": { "$ref": "#/$defs/color" },
+        "warningSoft": { "$ref": "#/$defs/color" },
+        "info": { "$ref": "#/$defs/color" },
+        "infoSoft": { "$ref": "#/$defs/color" }
+      }
+    },
+    "components": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["usesBorders"],
+      "properties": {
+        "usesBorders": { "type": "boolean" }
+      }
+    }
+  },
+  "$defs": {
+    "color": {
+      "type": "string",
+      "pattern": "^#[0-9A-Fa-f]{6}([0-9A-Fa-f]{2})?$"
+    }
+  }
+}

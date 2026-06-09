@@ -1,0 +1,42 @@
+{
+  "$schema": "../theme.schema.json",
+  "id": "dark",
+  "name": "Dark",
+  "description": "Dark theme configuration with black page backgrounds, translucent #ffffff17 component surfaces, white-on-color labels, Roboto typography, and functional product copy.",
+  "typography": {
+    "fontFamily": "Roboto",
+    "headingWeight": 700,
+    "bodyWeight": 500,
+    "lineHeight": 1.2
+  },
+  "colors": {
+    "page": "#000000",
+    "surface": "#ffffff17",
+    "secondarySurface": "#ffffff17",
+    "header": "#000000",
+    "headerBorder": "#ffffff17",
+    "footer": "#000000",
+    "primaryText": "#F9FAFB",
+    "secondaryText": "#D1D5DB",
+    "placeholderText": "#6B7280",
+    "border": "#ffffff17",
+    "focusRing": "#ffffff17",
+    "brand": "#ffffff17",
+    "primaryButton": "#FFFFFF",
+    "primaryButtonText": "#000000",
+    "secondaryButton": "#ffffff17",
+    "secondaryButtonText": "#F9FAFB",
+    "danger": "#EF4444",
+    "dangerSoft": "#ffffff17",
+    "dangerText": "#FFFFFF",
+    "success": "#10B981",
+    "successSoft": "#064E3B",
+    "warning": "#F97316",
+    "warningSoft": "#78350F",
+    "info": "#4B5563",
+    "infoSoft": "#ffffff17"
+  },
+  "components": {
+    "usesBorders": false
+  }
+}

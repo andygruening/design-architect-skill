@@ -1,3 +1,8 @@
+---
+name: Mobile
+description: Mandatory design patterns for iOS and Android screens, states, navigation, layout frames, and production UI hygiene.
+---
+
 # Mobile App Design
 
 This document defines mandatory design patterns for iOS and Android app screens.

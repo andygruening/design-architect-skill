@@ -3,24 +3,19 @@
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 import sys
 
 
-def read_frontmatter(path: Path) -> dict[str, str]:
-    text = path.read_text(encoding="utf-8")
-    lines = text.splitlines()
-    if not lines or lines[0].strip() != "---":
-        raise ValueError(f"{path} is missing YAML frontmatter")
+def read_theme(path: Path) -> dict[str, str]:
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as error:
+        raise ValueError(f"{path} is not valid JSON: {error}") from error
 
-    data: dict[str, str] = {}
-    for line in lines[1:]:
-        if line.strip() == "---":
-            break
-        if ":" not in line:
-            continue
-        key, value = line.split(":", 1)
-        data[key.strip()] = value.strip().strip("\"'")
+    if not isinstance(data, dict):
+        raise ValueError(f"{path} must contain a JSON object")
     return data
 
 
@@ -33,19 +28,19 @@ def main() -> int:
 
     rows: list[tuple[str, str]] = []
     for config_dir in sorted(path for path in themes_root.iterdir() if path.is_dir()):
-        config_path = config_dir / "CONFIG.md"
-        if not config_path.is_file():
+        theme_path = config_dir / "theme.json"
+        if not theme_path.is_file():
             continue
         try:
-            frontmatter = read_frontmatter(config_path)
+            theme = read_theme(theme_path)
         except ValueError as error:
             print(error, file=sys.stderr)
             return 1
 
-        name = frontmatter.get("name", "").strip()
-        description = frontmatter.get("description", "").strip()
+        name = str(theme.get("name", "")).strip()
+        description = str(theme.get("description", "")).strip()
         if not name or not description:
-            print(f"{config_path} must define name and description", file=sys.stderr)
+            print(f"{theme_path} must define name and description", file=sys.stderr)
             return 1
         rows.append((name, description))
 

@@ -1,0 +1,42 @@
+{
+  "$schema": "../theme.schema.json",
+  "id": "light",
+  "name": "Light",
+  "description": "Default light theme configuration with white page backgrounds, light gray accents, Roboto typography, and functional product copy.",
+  "typography": {
+    "fontFamily": "Roboto",
+    "headingWeight": 700,
+    "bodyWeight": 500,
+    "lineHeight": 1.2
+  },
+  "colors": {
+    "page": "#FFFFFF",
+    "surface": "#FFFFFF",
+    "secondarySurface": "#F3F4F6",
+    "header": "#FFFFFF",
+    "headerBorder": "#E5E7EB",
+    "footer": "#FFFFFF",
+    "primaryText": "#111827",
+    "secondaryText": "#4B5563",
+    "placeholderText": "#9CA3AF",
+    "border": "#D1D5DB",
+    "focusRing": "#E5E7EB",
+    "brand": "#E5E7EB",
+    "primaryButton": "#111827",
+    "primaryButtonText": "#FFFFFF",
+    "secondaryButton": "#F3F4F6",
+    "secondaryButtonText": "#111827",
+    "danger": "#DC2626",
+    "dangerSoft": "#FEF2F2",
+    "dangerText": "#FFFFFF",
+    "success": "#047857",
+    "successSoft": "#ECFDF5",
+    "warning": "#B45309",
+    "warningSoft": "#FFF7ED",
+    "info": "#6B7280",
+    "infoSoft": "#F3F4F6"
+  },
+  "components": {
+    "usesBorders": true
+  }
+}

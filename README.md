@@ -6,7 +6,7 @@ Design Architect is a Codex skill for generating and applying design-system UI c
 - Android with Jetpack Compose and Kotlin
 - React TypeScript web apps
 
-The skill uses theme specifications from `themes/` and platform design guidance from `design/` to produce shared styling files and app design proposals.
+The skill uses theme specifications from `themes/` and platform design guidance from `designs/` to produce shared styling files and app design proposals.
 
 ## Repository layout
 
@@ -15,14 +15,20 @@ The skill uses theme specifications from `themes/` and platform design guidance 
 ├── SKILL.md
 ├── agents/
 │   └── openai.yaml
-├── design/
-│   ├── DESIGN_MOBILE.md
-│   └── DESIGN_WEB.md
+├── designs/
+│   ├── TEMPLATE.md
+│   ├── mobile/
+│   │   └── SPEC.md
+│   └── web/
+│       └── SPEC.md
 ├── scripts/
 │   ├── generate_components.py
+│   ├── generate_example_themes.py
+│   ├── validate_themes.py
 │   └── list_theme_options.py
 ├── themes/
-│   ├── THEME_INTERFACE.md
+│   ├── TEMPLATE.md
+│   ├── theme.schema.json
 │   ├── dark/
 │   ├── light/
 │   └── oms/
@@ -47,11 +53,10 @@ $design-architect
 
 Theme configurations live under `themes/<theme-name>/`. Each theme must include:
 
-- `CONFIG.md`
-- `COLOR_SPEC.md`
-- `COMPONENTS.md`
+- `SPEC.md`
+- `theme.json`
 
-The required theme contract is documented in `themes/THEME_INTERFACE.md`.
+The human-readable theme contract is documented in `SPEC.md` and `themes/TEMPLATE.md`. The machine-readable generation contract is `theme.json`, validated against `themes/theme.schema.json`.
 
 List available themes with:
 
@@ -60,6 +65,12 @@ python3 scripts/list_theme_options.py
 ```
 
 The skill uses `themes/light/` by default. Users can select another theme by naming it in the prompt, such as `use oms` or `use dark`.
+
+Validate every theme config with:
+
+```bash
+python3 scripts/validate_themes.py
+```
 
 ## Component generation
 
@@ -75,7 +86,7 @@ Available platforms:
 - `kotlin`: writes `styling.gen.kt`
 - `typescript`: writes `styling.gen.ts`
 
-The generator reads the selected theme directory, validates the required theme fields, and renders the selected platform file from that theme's `CONFIG.md`, `COLOR_SPEC.md`, and `COMPONENTS.md`.
+The generator reads the selected theme directory, validates `theme.json`, and renders the selected platform file from that theme's machine-readable tokens.
 
 Generate another theme with:
 
@@ -99,6 +110,13 @@ python3 scripts/generate_components.py <project-root> --platform typescript --th
 ## Example app
 
 The `example/` directory contains a Vite React TypeScript app that showcases the current theme options. Generated files and dependencies are ignored by git.
+
+The example imports generated TypeScript theme modules from `example/src/generated/themes/`. Refresh them with:
+
+```bash
+cd example
+npm run generate:themes
+```
 
 Run it locally only when dependencies are already installed:
 

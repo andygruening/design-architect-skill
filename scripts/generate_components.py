@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import argparse
 import difflib
-import re
+import json
 import sys
 from dataclasses import dataclass
 from pathlib import Path
@@ -17,74 +17,33 @@ SKILL_ROOT = SCRIPT_DIR.parent
 THEMES_ROOT = SKILL_ROOT / "themes"
 
 
-COLOR_NAMES = {
-    "black": "#000000",
-    "white": "#FFFFFF",
-    "gray-50": "#F9FAFB",
-    "gray-100": "#F3F4F6",
-    "gray-200": "#E5E7EB",
-    "gray-300": "#D1D5DB",
-    "gray-400": "#9CA3AF",
-    "gray-500": "#6B7280",
-    "gray-600": "#4B5563",
-    "gray-900": "#111827",
-    "gray-950": "#030712",
-    "slate-50": "#F6F6FC",
-    "slate-100": "#EEF0F7",
-    "slate-200": "#DFE3F0",
-    "slate-300": "#C8CFE1",
-    "slate-400": "#929EBA",
-    "slate-500": "#64708F",
-    "slate-900": "#141635",
-    "slate-950": "#090624",
-    "purple-50": "#F5F2FA",
-    "purple-100": "#EBE3F8",
-    "purple-500": "#670DE5",
-    "purple-700": "#400A8F",
-    "red-50": "#FEF2F2",
-    "red-100": "#FEE2E2",
-    "red-500": "#EF4444",
-    "red-600": "#DC2626",
-    "red-700": "#B91C1C",
-    "red-800": "#991B1B",
-    "emerald-50": "#ECFDF5",
-    "emerald-500": "#10B981",
-    "emerald-700": "#047857",
-    "orange-50": "#FFF7ED",
-    "orange-500": "#F97316",
-    "amber-700": "#B45309",
-}
-
-REQUIRED_COLOR_FIELDS = [
-    ("Brand accent", "Brand purple"),
-    "Primary CTA",
-    "App shell/page background",
-    "Text hierarchy",
-    "Typography",
-    "Icons",
-    "Motion",
+HEX_COLOR_FIELDS = [
+    "page",
+    "surface",
+    "secondarySurface",
+    "header",
+    "headerBorder",
+    "footer",
+    "primaryText",
+    "secondaryText",
+    "placeholderText",
+    "border",
+    "focusRing",
+    "brand",
+    "primaryButton",
+    "primaryButtonText",
+    "secondaryButton",
+    "secondaryButtonText",
+    "danger",
+    "dangerSoft",
+    "dangerText",
+    "success",
+    "successSoft",
+    "warning",
+    "warningSoft",
+    "info",
+    "infoSoft",
 ]
-
-REQUIRED_COMPONENT_FIELDS = [
-    "Buttons",
-    "Inputs",
-    "Dropdowns",
-    "Labels",
-    "Badges",
-    "Alerts",
-    "Cards and panels",
-    "Icon buttons",
-    "Status banner",
-]
-
-
-@dataclass(frozen=True)
-class ThemeConfig:
-    slug: str
-    name: str
-    description: str
-    color_spec: str
-    components: str
 
 
 @dataclass(frozen=True)
@@ -121,198 +80,120 @@ class ThemeTokens:
     uses_borders: bool
 
 
-def parse_frontmatter(markdown: str, path: Path) -> dict[str, str]:
-    if not markdown.startswith("---\n"):
-        raise ValueError(f"{path} must start with YAML frontmatter.")
-    end = markdown.find("\n---", 4)
-    if end == -1:
-        raise ValueError(f"{path} has unterminated YAML frontmatter.")
-
-    values: dict[str, str] = {}
-    for line in markdown[4:end].splitlines():
-        if ":" not in line:
-            continue
-        key, value = line.split(":", 1)
-        values[key.strip()] = value.strip().strip('"')
-    return values
-
-
 def available_themes() -> list[str]:
     if not THEMES_ROOT.exists():
         return []
-    return sorted(path.name for path in THEMES_ROOT.iterdir() if (path / "CONFIG.md").is_file())
+    return sorted(path.name for path in THEMES_ROOT.iterdir() if (path / "theme.json").is_file())
 
 
-def read_theme(slug: str) -> ThemeConfig:
+def read_theme(slug: str) -> ThemeTokens:
     theme_dir = THEMES_ROOT / slug
     if not theme_dir.is_dir():
         choices = ", ".join(available_themes()) or "none"
         raise ValueError(f"Unknown theme '{slug}'. Available themes: {choices}.")
 
-    config_path = theme_dir / "CONFIG.md"
-    color_path = theme_dir / "COLOR_SPEC.md"
-    components_path = theme_dir / "COMPONENTS.md"
-    for path in (config_path, color_path, components_path):
-        if not path.is_file():
-            raise ValueError(f"Theme '{slug}' is missing {path.name}.")
+    theme_path = theme_dir / "theme.json"
+    if not theme_path.is_file():
+        raise ValueError(f"Theme '{slug}' is missing theme.json.")
 
-    config_text = config_path.read_text()
-    frontmatter = parse_frontmatter(config_text, config_path)
-    missing_config = [field for field in ("name", "description") if not frontmatter.get(field)]
-    if missing_config:
-        raise ValueError(f"{config_path} is missing frontmatter fields: {', '.join(missing_config)}.")
+    try:
+        data = json.loads(theme_path.read_text())
+    except json.JSONDecodeError as error:
+        raise ValueError(f"{theme_path} is not valid JSON: {error}") from error
 
-    color_spec = color_path.read_text()
-    components = components_path.read_text()
-    validate_required_fields(color_path, color_spec, REQUIRED_COLOR_FIELDS)
-    validate_required_fields(components_path, components, REQUIRED_COMPONENT_FIELDS)
+    validate_theme_json(data, theme_path, expected_slug=slug)
+    colors = data["colors"]
+    typography = data["typography"]
+    components = data["components"]
 
-    return ThemeConfig(
-        slug=slug,
-        name=frontmatter["name"],
-        description=frontmatter["description"],
-        color_spec=color_spec,
-        components=components,
+    return ThemeTokens(
+        slug=data["id"],
+        name=data["name"],
+        description=data["description"],
+        font_family=typography["fontFamily"],
+        page=colors["page"],
+        surface=colors["surface"],
+        secondary_surface=colors["secondarySurface"],
+        header=colors["header"],
+        header_border=colors["headerBorder"],
+        footer=colors["footer"],
+        primary_text=colors["primaryText"],
+        secondary_text=colors["secondaryText"],
+        placeholder_text=colors["placeholderText"],
+        border=colors["border"],
+        focus_ring=colors["focusRing"],
+        brand=colors["brand"],
+        primary_button=colors["primaryButton"],
+        primary_button_text=colors["primaryButtonText"],
+        secondary_button=colors["secondaryButton"],
+        secondary_button_text=colors["secondaryButtonText"],
+        danger=colors["danger"],
+        danger_soft=colors["dangerSoft"],
+        danger_text=colors["dangerText"],
+        success=colors["success"],
+        success_soft=colors["successSoft"],
+        warning=colors["warning"],
+        warning_soft=colors["warningSoft"],
+        info=colors["info"],
+        info_soft=colors["infoSoft"],
+        uses_borders=components["usesBorders"],
     )
 
 
-def validate_required_fields(path: Path, text: str, fields: list[str | tuple[str, ...]]) -> None:
-    missing: list[str] = []
-    for field in fields:
-        options = (field,) if isinstance(field, str) else field
-        if not any(re.search(rf"(^|\n)\s*-\s*{re.escape(option)}\b", text, re.I) for option in options):
-            missing.append(options[0])
+def validate_theme_json(data: object, path: Path, expected_slug: str | None = None) -> None:
+    if not isinstance(data, dict):
+        raise ValueError(f"{path} must contain a JSON object.")
+
+    required_top = ("id", "name", "description", "typography", "colors", "components")
+    require_keys(data, required_top, path)
+
+    if expected_slug is not None and data["id"] != expected_slug:
+        raise ValueError(f"{path} id must match its directory name '{expected_slug}'.")
+
+    for key in ("id", "name", "description"):
+        if not isinstance(data[key], str) or not data[key].strip():
+            raise ValueError(f"{path} field '{key}' must be a non-empty string.")
+
+    typography = require_object(data, "typography", path)
+    require_keys(typography, ("fontFamily", "headingWeight", "bodyWeight", "lineHeight"), path / "typography")
+    if not isinstance(typography["fontFamily"], str) or not typography["fontFamily"].strip():
+        raise ValueError(f"{path} typography.fontFamily must be a non-empty string.")
+    for key in ("headingWeight", "bodyWeight"):
+        if not isinstance(typography[key], int):
+            raise ValueError(f"{path} typography.{key} must be an integer.")
+    if not isinstance(typography["lineHeight"], (int, float)):
+        raise ValueError(f"{path} typography.lineHeight must be a number.")
+
+    colors = require_object(data, "colors", path)
+    require_keys(colors, HEX_COLOR_FIELDS, path / "colors")
+    for key in HEX_COLOR_FIELDS:
+        if not is_hex_color(colors[key]):
+            raise ValueError(f"{path} colors.{key} must be a #RRGGBB or #RRGGBBAA color.")
+
+    components = require_object(data, "components", path)
+    require_keys(components, ("usesBorders",), path / "components")
+    if not isinstance(components["usesBorders"], bool):
+        raise ValueError(f"{path} components.usesBorders must be a boolean.")
+
+
+def require_object(data: dict[str, object], key: str, path: Path) -> dict[str, object]:
+    value = data[key]
+    if not isinstance(value, dict):
+        raise ValueError(f"{path} field '{key}' must be an object.")
+    return value
+
+
+def require_keys(data: dict[str, object], keys: tuple[str, ...] | list[str], path: Path) -> None:
+    missing = [key for key in keys if key not in data]
     if missing:
         raise ValueError(f"{path} is missing required fields: {', '.join(missing)}.")
 
 
-def bullet(text: str, field: str) -> str:
-    match = re.search(rf"^\s*-\s*{re.escape(field)}[^:]*:\s*(.+)$", text, re.I | re.M)
-    return match.group(1).strip() if match else ""
-
-
-def hexes(text: str) -> list[str]:
-    return [match.group(0) for match in re.finditer(r"#[0-9a-fA-F]{6}(?:[0-9a-fA-F]{2})?", text)]
-
-
-def color_name(text: str, default: str) -> str:
-    lowered = text.lower()
-    for name, value in sorted(COLOR_NAMES.items(), key=lambda item: -len(item[0])):
-        if re.search(rf"\b{re.escape(name)}\b", lowered):
-            return value
-    return default
-
-
-def first_color(text: str, default: str) -> str:
-    found = hexes(text)
-    if found:
-        return found[0]
-    return color_name(text, default)
-
-
-def second_color(text: str, default: str) -> str:
-    found = hexes(text)
-    if len(found) > 1:
-        return found[1]
-    return default
-
-
-def resolve_font(text: str) -> str:
-    if re.search(r"\bRoboto\b", text, re.I):
-        return "Roboto"
-    if re.search(r"\bFustat\b", text, re.I):
-        return "Fustat"
-    return "system"
-
-
-def extract_tokens(theme: ThemeConfig) -> ThemeTokens:
-    color_spec = theme.color_spec
-    components = theme.components
-    all_text = f"{color_spec}\n{components}"
-
-    brand_line = bullet(color_spec, "Brand accent") or bullet(color_spec, "Brand purple")
-    primary_line = bullet(color_spec, "Primary CTA")
-    page_line = bullet(color_spec, "App shell/page background")
-    border_line = bullet(color_spec, "Borders") or bullet(color_spec, "Default border")
-    header_line = bullet(color_spec, "Top headers")
-    footer_line = bullet(color_spec, "Footers")
-    text_line = bullet(color_spec, "Text hierarchy")
-    typography_line = bullet(color_spec, "Typography")
-    buttons_line = bullet(components, "Buttons")
-    inputs_line = bullet(components, "Inputs")
-    cards_line = bullet(components, "Cards and panels")
-
-    text_colors = hexes(text_line)
-    primary_text = text_colors[0] if len(text_colors) > 0 else color_name(text_line, "#111827")
-    secondary_text = text_colors[1] if len(text_colors) > 1 else "#4B5563"
-    placeholder_text = text_colors[2] if len(text_colors) > 2 else "#9CA3AF"
-
-    page = first_color(page_line, "#FFFFFF")
-    page_colors = hexes(page_line)
-    surface = page_colors[1] if len(page_colors) > 1 else ("#FFFFFF" if page == "#FFFFFF" else page)
-    secondary_surface = first_color(inputs_line, first_color(cards_line, second_color(page_line, surface)))
-
-    uses_borders = not re.search(r"\bno border|do not use borders\b", all_text, re.I)
-    border = first_color(border_line, "#D1D5DB")
-    if not uses_borders and hexes(header_line):
-        border = second_color(header_line, border)
-
-    primary_button = first_color(primary_line, "#111827")
-    primary_button_text = "#000000" if "black" in primary_line.lower() else "#FFFFFF"
-    if len(hexes(primary_line)) > 1:
-        primary_button_text = hexes(primary_line)[1]
-
-    secondary_clause = re.search(r"Secondary\s+(?:is|uses)\s+([^.;]+)", buttons_line, re.I)
-    secondary_text = secondary_text
-    if secondary_clause:
-        secondary_button = first_color(secondary_clause.group(1), secondary_surface)
-        secondary_button_text = second_color(secondary_clause.group(1), primary_text)
-    else:
-        secondary_button = secondary_surface
-        secondary_button_text = primary_text
-
-    danger_clause = re.search(r"Danger primary\s+(?:is|uses)\s+([^.;]+)", buttons_line, re.I)
-    danger = first_color(danger_clause.group(1), "#DC2626") if danger_clause else "#DC2626"
-    danger_text = "#FFFFFF" if "white label" in buttons_line.lower() else "#B91C1C"
-    if theme.slug == "dark":
-        danger_text = "#FEE2E2"
-
-    info = first_color(bullet(color_spec, "Semantic colors"), first_color(brand_line, "#E5E7EB"))
-    success = "#047857" if theme.slug != "dark" else "#10B981"
-    warning = "#B45309" if theme.slug != "dark" else "#F97316"
-
-    return ThemeTokens(
-        slug=theme.slug,
-        name=theme.name,
-        description=theme.description,
-        font_family=resolve_font(typography_line),
-        page=page,
-        surface=surface,
-        secondary_surface=secondary_surface,
-        header=first_color(header_line, page),
-        header_border=second_color(header_line, border),
-        footer=first_color(footer_line, page),
-        primary_text=primary_text,
-        secondary_text=secondary_text,
-        placeholder_text=placeholder_text,
-        border=border,
-        focus_ring=first_color(brand_line, border),
-        brand=first_color(brand_line, "#E5E7EB"),
-        primary_button=primary_button,
-        primary_button_text=primary_button_text,
-        secondary_button=secondary_button,
-        secondary_button_text=secondary_button_text,
-        danger=danger,
-        danger_soft="#FEE2E2" if theme.slug == "dark" else "#FEF2F2",
-        danger_text=danger_text,
-        success=success,
-        success_soft="#064E3B" if theme.slug == "dark" else "#ECFDF5",
-        warning=warning,
-        warning_soft="#78350F" if theme.slug == "dark" else "#FFF7ED",
-        info=info,
-        info_soft=secondary_surface if theme.slug == "dark" else ("#F3F4F6" if theme.slug == "light" else "#F5F2FA"),
-        uses_borders=uses_borders,
-    )
+def is_hex_color(value: object) -> bool:
+    if not isinstance(value, str):
+        return False
+    raw = value.removeprefix("#")
+    return value.startswith("#") and len(raw) in (6, 8) and all(char in "0123456789abcdefABCDEF" for char in raw)
 
 
 def swift(tokens: ThemeTokens) -> str:
@@ -749,7 +630,7 @@ def write_file(path: Path, content: str, check: bool) -> bool:
 
 
 def generate(project_root: Path, platform: str, theme_slug: str, package_name: str, check: bool) -> bool:
-    tokens = extract_tokens(read_theme(theme_slug))
+    tokens = read_theme(theme_slug)
     project_root = project_root.resolve()
 
     outputs = {
