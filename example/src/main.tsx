@@ -52,7 +52,7 @@ function App() {
         </div>
       </header>
 
-      {String(activeDesign.id) === "codex" && <CodexMarketplaceApp />}
+      {activeDesign.id === "codex" && <CodexMarketplaceApp />}
       {activeDesign.id === "web" && <WebMarketplaceApp />}
     </main>
   );
