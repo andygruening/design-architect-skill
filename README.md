@@ -16,22 +16,19 @@ The skill uses theme specifications from `themes/` and platform design guidance 
 ├── agents/
 │   └── openai.yaml
 ├── designs/
-│   ├── TEMPLATE.md
-│   ├── mobile/
-│   │   └── SPEC.md
-│   └── web/
-│       └── SPEC.md
+│   ├── mobile.md
+│   └── web.md
 ├── scripts/
 │   ├── generate_components.py
 │   ├── generate_example_themes.py
 │   ├── validate_themes.py
 │   └── list_theme_options.py
 ├── themes/
-│   ├── TEMPLATE.md
-│   ├── theme.schema.json
-│   ├── dark/
-│   ├── light/
-│   └── oms/
+│   ├── dark.json
+│   ├── light.json
+│   ├── oms.json
+│   ├── SPEC.md
+│   └── theme.schema.json
 └── example/
 ```
 
@@ -51,12 +48,13 @@ $design-architect
 
 ## Themes
 
-Theme configurations live under `themes/<theme-name>/`. Each theme must include:
+Theme configurations live directly under `themes/` as JSON files:
 
-- `SPEC.md`
-- `theme.json`
+- `themes/light.json`
+- `themes/dark.json`
+- `themes/oms.json`
 
-The human-readable theme contract is documented in `SPEC.md` and `themes/TEMPLATE.md`. The machine-readable generation contract is `theme.json`, validated against `themes/theme.schema.json`.
+The generic human-readable theme contract is documented in `themes/SPEC.md`. The machine-readable generation contract is each theme JSON file, validated against `themes/theme.schema.json`.
 
 List available themes with:
 
@@ -64,7 +62,7 @@ List available themes with:
 python3 scripts/list_theme_options.py
 ```
 
-The skill uses `themes/light/` by default. Users can select another theme by naming it in the prompt, such as `use oms` or `use dark`.
+The skill uses `themes/light.json` by default. Users can select another theme by naming it in the prompt, such as `use oms` or `use dark`.
 
 Validate every theme config with:
 
@@ -86,7 +84,7 @@ Available platforms:
 - `kotlin`: writes `styling.gen.kt`
 - `typescript`: writes `styling.gen.ts`
 
-The generator reads the selected theme directory, validates `theme.json`, and renders the selected platform file from that theme's machine-readable tokens.
+The generator reads the selected `themes/<theme-name>.json` file, validates it, and renders the selected platform file from that theme's machine-readable tokens.
 
 Generate another theme with:
 

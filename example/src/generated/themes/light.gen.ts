@@ -21,10 +21,13 @@ export const designTokens = {
     border: "#D1D5DB",
     focusRing: "#E5E7EB",
     brand: "#E5E7EB",
+    hover: "#E5E7EB",
     primaryButton: "#111827",
     primaryButtonText: "#FFFFFF",
     secondaryButton: "#F3F4F6",
     secondaryButtonText: "#111827",
+    selectedButton: "#111827",
+    selectedButtonText: "#FFFFFF",
     danger: "#DC2626",
     dangerSoft: "#FEF2F2",
     dangerText: "#FFFFFF",
@@ -35,30 +38,156 @@ export const designTokens = {
     info: "#6B7280",
     infoSoft: "#F3F4F6",
   },
+  rawColors: {
+    "border": "#D1D5DB",
+    "brand": "#E5E7EB",
+    "danger": "#DC2626",
+    "dangerSoft": "#FEF2F2",
+    "dangerText": "#FFFFFF",
+    "focusRing": "#E5E7EB",
+    "footer": "#FFFFFF",
+    "header": "#FFFFFF",
+    "headerBorder": "#E5E7EB",
+    "hover": "#E5E7EB",
+    "info": "#6B7280",
+    "infoSoft": "#F3F4F6",
+    "page": "#FFFFFF",
+    "placeholderText": "#9CA3AF",
+    "primaryButton": "#111827",
+    "primaryButtonText": "#FFFFFF",
+    "primaryText": "#111827",
+    "secondaryButton": "#F3F4F6",
+    "secondaryButtonText": "#111827",
+    "secondarySurface": "#F3F4F6",
+    "secondaryText": "#4B5563",
+    "selectedButton": "#111827",
+    "selectedButtonText": "#FFFFFF",
+    "success": "#047857",
+    "successSoft": "#ECFDF5",
+    "surface": "#FFFFFF",
+    "warning": "#B45309",
+    "warningSoft": "#FFF7ED"
+  },
   typography: {
     fontFamily: "Roboto",
     headingWeight: 700,
     bodyWeight: 500,
     lineHeight: 1.2,
+    raw: {
+      "product": {
+        "bodyWeight": 500,
+        "boldWeight": 700,
+        "family": "Roboto",
+        "lineHeight": 1.2
+      },
+      "scale": {}
+    },
+  },
+  spacing: {
+    "base": 4,
+    "scale": [
+      4,
+      8,
+      12,
+      16,
+      20,
+      24,
+      32,
+      40,
+      48,
+      64
+    ]
   },
   radii: {
     button: 8,
-    buttonLarge: 12,
-    input: 12,
-    badge: 16,
-    card: 24,
+    buttonLarge: 8,
+    input: 8,
+    badge: 8,
+    card: 8,
+    raw: {
+      "badge": 8,
+      "button": 8,
+      "card": 8,
+      "input": 8
+    },
   },
   borders: {
     defaultWidth: "1px",
+    boxWidth: "1px",
+    labelWidth: "1px",
+    buttonWidth: "1px",
+    focusRingWidth: "2px",
+    raw: {
+      "boxWidth": "1px",
+      "buttonWidth": "1px",
+      "defaultWidth": "1",
+      "labelWidth": "1px"
+    },
+  },
+  shadows: {
+    "button": "none",
+    "card": "none",
+    "drawer": "none",
+    "modal": "none",
+    "popover": "none"
   },
   motion: {
     hover: "120ms ease",
     base: "200ms ease",
     modal: "320ms ease",
+    raw: {
+      "base": "200ms ease",
+      "hover": "120ms ease",
+      "modal": "320ms ease"
+    },
+  },
+  components: {
+    "badge": {
+      "fontSize": 12,
+      "paddingX": 10,
+      "paddingY": 3,
+      "radius": 8
+    },
+    "button": {
+      "sizes": {
+        "lg": {
+          "fontSize": 14,
+          "height": 40,
+          "paddingX": 12
+        }
+      },
+      "states": [
+        "default",
+        "hover",
+        "active",
+        "focusVisible",
+        "disabled"
+      ],
+      "variants": [
+        "primary",
+        "secondary",
+        "dangerPrimary",
+        "dangerSecondary"
+      ]
+    },
+    "card": {
+      "border": "colors.border",
+      "padding": [
+        24
+      ],
+      "radius": 8,
+      "shadow": "none",
+      "surface": "colors.surface"
+    },
+    "input": {
+      "height": 40,
+      "paddingX": 12,
+      "radius": 8
+    }
   },
 } as const;
 
-export type DesignButtonVariant = "primary" | "secondary" | "dangerPrimary" | "dangerSecondary";
+export type DesignButtonVariant = "primary" | "secondary" | "selected" | "dangerPrimary" | "dangerSecondary";
 export type DesignBadgeVariant = "info" | "neutral" | "success" | "warning" | "danger";
 export type StyleRecipe = Record<string, string | number>;
 
@@ -66,24 +195,163 @@ export const buttonRecipe: Record<DesignButtonVariant, StyleRecipe> = {
   primary: {
     background: designTokens.colors.primaryButton,
     color: designTokens.colors.primaryButtonText,
-    border: `${designTokens.borders.defaultWidth} solid ${designTokens.colors.border}`,
+    border: `${designTokens.borders.buttonWidth} solid ${designTokens.colors.border}`,
+    borderRadius: designTokens.radii.button,
+    minHeight: 40,
+    paddingInline: 12,
+    fontSize: 14,
+    hoverBackground: "#E5E7EB",
+    activeBackground: "#E5E7EB",
+    disabledBackground: "#F3F4F6",
+    disabledColor: "#9CA3AF",
+    transition: designTokens.motion.hover,
   },
   secondary: {
     background: designTokens.colors.secondaryButton,
     color: designTokens.colors.secondaryButtonText,
-    border: `${designTokens.borders.defaultWidth} solid ${designTokens.colors.border}`,
+    border: `${designTokens.borders.buttonWidth} solid #D1D5DB`,
+    borderRadius: designTokens.radii.button,
+    minHeight: 40,
+    paddingInline: 12,
+    fontSize: 14,
+    hoverBorderColor: "#D1D5DB",
+    activeBackground: "#E5E7EB",
+    activeBorderColor: "#D1D5DB",
+    disabledBackground: "#F3F4F6",
+    disabledColor: "#9CA3AF",
+    transition: designTokens.motion.hover,
+  },
+  selected: {
+    background: designTokens.colors.selectedButton,
+    color: designTokens.colors.selectedButtonText,
+    border: `${designTokens.borders.buttonWidth} solid ${designTokens.colors.border}`,
+    borderRadius: designTokens.radii.button,
+    minHeight: 40,
+    paddingInline: 12,
+    fontSize: 14,
   },
   dangerPrimary: {
     background: designTokens.colors.danger,
     color: "#FFFFFF",
-    border: `${designTokens.borders.defaultWidth} solid ${designTokens.colors.border}`,
+    border: `${designTokens.borders.buttonWidth} solid ${designTokens.colors.border}`,
+    borderRadius: designTokens.radii.button,
+    minHeight: 40,
+    paddingInline: 12,
+    fontSize: 14,
+    hoverBackground: "#DC2626",
+    activeBackground: "#DC2626",
+    transition: designTokens.motion.hover,
   },
   dangerSecondary: {
     background: designTokens.colors.dangerSoft,
     color: designTokens.colors.dangerText,
-    border: `${designTokens.borders.defaultWidth} solid ${designTokens.colors.border}`,
+    border: `${designTokens.borders.buttonWidth} solid ${designTokens.colors.border}`,
+    borderRadius: designTokens.radii.button,
+    minHeight: 40,
+    paddingInline: 12,
+    fontSize: 14,
+    hoverBackground: designTokens.colors.hover,
+    transition: designTokens.motion.hover,
   },
 };
+
+export const inputRecipe = {
+  default: {
+    background: designTokens.colors.secondarySurface,
+    color: designTokens.colors.primaryText,
+    placeholderColor: designTokens.colors.placeholderText,
+    border: "1px solid #D1D5DB",
+    borderRadius: designTokens.radii.input,
+    minHeight: 40,
+    paddingInline: 12,
+    transition: designTokens.motion.hover,
+  },
+  active: {
+    borderColor: designTokens.colors.focusRing,
+    boxShadow: `0 0 0 ${designTokens.borders.focusRingWidth} ${designTokens.colors.focusRing}`,
+    minHeight: 40,
+  },
+  disabled: {
+    background: "#F3F4F6",
+    color: "#9CA3AF",
+  },
+  destructive: {
+    borderColor: designTokens.colors.danger,
+    color: designTokens.colors.primaryText,
+  },
+} as const;
+
+export const badgeRecipe: Record<DesignBadgeVariant, StyleRecipe> = {
+  info: { background: designTokens.colors.infoSoft, color: designTokens.colors.info, border: `${designTokens.borders.labelWidth} solid ${designTokens.colors.border}`, borderRadius: designTokens.radii.badge, paddingBlock: 3, paddingInline: 10, fontSize: 12, fontWeight: 500 },
+  neutral: { background: designTokens.colors.secondarySurface, color: designTokens.colors.primaryText, border: `${designTokens.borders.labelWidth} solid ${designTokens.colors.border}`, borderRadius: designTokens.radii.badge, paddingBlock: 3, paddingInline: 10, fontSize: 12, fontWeight: 500 },
+  success: { background: designTokens.colors.successSoft, color: designTokens.colors.success, border: `${designTokens.borders.labelWidth} solid ${designTokens.colors.border}`, borderRadius: designTokens.radii.badge, paddingBlock: 3, paddingInline: 10, fontSize: 12, fontWeight: 500 },
+  warning: { background: designTokens.colors.warningSoft, color: designTokens.colors.warning, border: `${designTokens.borders.labelWidth} solid ${designTokens.colors.border}`, borderRadius: designTokens.radii.badge, paddingBlock: 3, paddingInline: 10, fontSize: 12, fontWeight: 500 },
+  danger: { background: designTokens.colors.dangerSoft, color: designTokens.colors.dangerText, border: `${designTokens.borders.labelWidth} solid ${designTokens.colors.border}`, borderRadius: designTokens.radii.badge, paddingBlock: 3, paddingInline: 10, fontSize: 12, fontWeight: 500 },
+};
+
+export const cardRecipe = {
+  default: {
+    background: "#FFFFFF",
+    border: "1px solid #D1D5DB",
+    borderRadius: designTokens.radii.card,
+    boxShadow: "none",
+    padding: 24,
+  },
+  resource: {
+    background: "#FFFFFF",
+    border: `${designTokens.borders.boxWidth} solid ${designTokens.colors.headerBorder}`,
+    borderRadius: designTokens.radii.card,
+    padding: 24,
+  },
+} as const;
+
+export const tableRecipe = {
+  header: {
+    background: "#F3F4F6",
+    color: designTokens.colors.secondaryText,
+    fontSize: 12,
+  },
+  row: {
+    borderBottom: "1px solid #E5E7EB",
+    hoverBackground: "#E5E7EB",
+  },
+  cell: {
+    paddingBlock: 12,
+    paddingInline: 18,
+  },
+} as const;
+
+export const overlayRecipe = {
+  modal: {
+    background: designTokens.colors.surface,
+    border: `${designTokens.borders.boxWidth} solid ${designTokens.colors.border}`,
+    borderRadius: 8,
+    boxShadow: designTokens.shadows.modal ?? "none",
+    maxWidth: 400,
+  },
+  drawer: {
+    background: designTokens.colors.surface,
+    boxShadow: designTokens.shadows.drawer ?? "none",
+    anchor: "right",
+  },
+  toast: {
+    background: designTokens.colors.surface,
+    border: `${designTokens.borders.boxWidth} solid ${designTokens.colors.border}`,
+    borderRadius: 8,
+    boxShadow: designTokens.shadows.popover ?? "none",
+    paddingBlock: 16,
+    paddingInline: 20,
+  },
+} as const;
+
+export const appShellRecipe = {
+  sidebarWidth: 240,
+  topNavHeight: 64,
+  sidebarBackground: "#FFFFFF",
+  mainBackground: "#FFFFFF",
+  activeNavBackground: "#111827",
+  activeNavText: "#FFFFFF",
+} as const;
 
 export const componentRecipe = {
   page: {
@@ -92,17 +360,10 @@ export const componentRecipe = {
     fontFamily: designTokens.typography.fontFamily,
   },
   card: {
-    background: designTokens.colors.surface,
-    border: `${designTokens.borders.defaultWidth} solid ${designTokens.colors.border}`,
-    borderRadius: designTokens.radii.card,
-    padding: 24,
+    ...cardRecipe.default,
   },
   input: {
-    background: designTokens.colors.secondarySurface,
-    color: designTokens.colors.primaryText,
-    border: `${designTokens.borders.defaultWidth} solid ${designTokens.colors.border}`,
-    borderRadius: designTokens.radii.input,
-    minHeight: 40,
+    ...inputRecipe.default,
   },
   header: {
     background: designTokens.colors.header,
@@ -114,10 +375,6 @@ export const componentRecipe = {
     color: designTokens.colors.secondaryText,
   },
   badge: {
-    info: { background: designTokens.colors.infoSoft, color: designTokens.colors.info },
-    neutral: { background: designTokens.colors.secondarySurface, color: designTokens.colors.primaryText },
-    success: { background: designTokens.colors.successSoft, color: designTokens.colors.success },
-    warning: { background: designTokens.colors.warningSoft, color: designTokens.colors.warning },
-    danger: { background: designTokens.colors.dangerSoft, color: designTokens.colors.dangerText },
+    ...badgeRecipe,
   },
 } as const;

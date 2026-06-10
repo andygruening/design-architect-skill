@@ -27,9 +27,8 @@ def main() -> int:
         return 1
 
     rows: list[tuple[str, str]] = []
-    for config_dir in sorted(path for path in themes_root.iterdir() if path.is_dir()):
-        theme_path = config_dir / "theme.json"
-        if not theme_path.is_file():
+    for theme_path in sorted(themes_root.glob("*.json")):
+        if theme_path.name == "theme.schema.json":
             continue
         try:
             theme = read_theme(theme_path)

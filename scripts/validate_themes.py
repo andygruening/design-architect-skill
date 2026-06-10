@@ -26,14 +26,14 @@ def load_generator():
 def main() -> int:
     generator = load_generator()
     count = 0
-    for theme_dir in sorted(path for path in THEMES_ROOT.iterdir() if path.is_dir()):
-        if not (theme_dir / "theme.json").is_file():
+    validate_spec(THEMES_ROOT / "SPEC.md")
+    for theme_path in sorted(THEMES_ROOT.glob("*.json")):
+        if theme_path.name == "theme.schema.json":
             continue
-        validate_spec(theme_dir / "SPEC.md")
-        generator.read_theme(theme_dir.name)
+        generator.read_theme(theme_path.stem)
         count += 1
 
-    print(f"Validated {count} theme configuration files.")
+    print(f"Validated {count} theme configuration files and themes/SPEC.md.")
     return 0
 
 

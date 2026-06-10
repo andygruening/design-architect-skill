@@ -22,10 +22,13 @@
     "border": "#ffffff17",
     "focusRing": "#ffffff17",
     "brand": "#ffffff17",
+    "hover": "#ffffff17",
     "primaryButton": "#FFFFFF",
     "primaryButtonText": "#000000",
     "secondaryButton": "#ffffff17",
     "secondaryButtonText": "#F9FAFB",
+    "selectedButton": "#FFFFFF",
+    "selectedButtonText": "#000000",
     "danger": "#EF4444",
     "dangerSoft": "#ffffff17",
     "dangerText": "#FFFFFF",
@@ -37,6 +40,8 @@
     "infoSoft": "#ffffff17"
   },
   "components": {
-    "usesBorders": false
+    "boxBorders": "none",
+    "labelBorders": "none",
+    "buttonBorders": "none"
   }
 }

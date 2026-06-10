@@ -29,14 +29,16 @@ def parse_frontmatter(path: Path) -> dict[str, str]:
 
 def main() -> int:
     rows: list[dict[str, str]] = []
-    for spec_path in sorted(DESIGNS_DIR.glob("*/SPEC.md")):
+    for spec_path in sorted(DESIGNS_DIR.glob("*.md")):
+        if spec_path.name == "TEMPLATE.md":
+            continue
         fields = parse_frontmatter(spec_path)
         rows.append(
             {
-                "id": spec_path.parent.name,
+                "id": spec_path.stem,
                 "name": fields["name"],
                 "description": fields["description"],
-                "path": f"designs/{spec_path.parent.name}/SPEC.md",
+                "path": f"designs/{spec_path.name}",
             }
         )
 

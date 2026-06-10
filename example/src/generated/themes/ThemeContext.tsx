@@ -24,10 +24,13 @@ type GeneratedThemeModule = {
       readonly placeholderText: string;
       readonly border: string;
       readonly brand: string;
+      readonly hover: string;
       readonly primaryButton: string;
       readonly primaryButtonText: string;
       readonly secondaryButton: string;
       readonly secondaryButtonText: string;
+      readonly selectedButton: string;
+      readonly selectedButtonText: string;
       readonly danger: string;
       readonly success: string;
       readonly warning: string;
@@ -38,6 +41,14 @@ type GeneratedThemeModule = {
     };
     readonly borders: {
       readonly defaultWidth: string;
+      readonly boxWidth: string;
+      readonly labelWidth: string;
+      readonly buttonWidth: string;
+    };
+    readonly radii: {
+      readonly button: number;
+      readonly badge: number;
+      readonly card: number;
     };
   };
   readonly buttonRecipe: {
@@ -70,10 +81,13 @@ export type ThemeOption = {
     subtleText: string;
     border: string;
     accent: string;
+    hover: string;
     primaryButton: string;
     primaryButtonText: string;
     secondaryButton: string;
     secondaryButtonText: string;
+    selectedButton: string;
+    selectedButtonText: string;
     dangerButton: string;
     dangerButtonText: string;
     success: string;
@@ -82,9 +96,15 @@ export type ThemeOption = {
     info: string;
     labelText: string;
     borderWidth: string;
+    boxBorderWidth: string;
+    labelBorderWidth: string;
+    buttonBorderWidth: string;
     cardBorder: string;
     inputBorder: string;
     headerBorderStyle: string;
+    boxRadius: string;
+    labelRadius: string;
+    buttonRadius: string;
   };
 };
 
@@ -152,10 +172,13 @@ function toThemeOption(themeModule: GeneratedThemeModule): ThemeOption {
       subtleText: colors.placeholderText,
       border: colors.border,
       accent: colors.brand,
+      hover: colors.hover,
       primaryButton: stringValue(buttonRecipe.primary.background),
       primaryButtonText: stringValue(buttonRecipe.primary.color),
       secondaryButton: stringValue(buttonRecipe.secondary.background),
       secondaryButtonText: stringValue(buttonRecipe.secondary.color),
+      selectedButton: colors.selectedButton,
+      selectedButtonText: colors.selectedButtonText,
       dangerButton: stringValue(buttonRecipe.dangerPrimary.background),
       dangerButtonText: stringValue(buttonRecipe.dangerPrimary.color),
       success: colors.success,
@@ -164,9 +187,15 @@ function toThemeOption(themeModule: GeneratedThemeModule): ThemeOption {
       info: colors.info,
       labelText: "#FFFFFF",
       borderWidth: designTokens.borders.defaultWidth,
+      boxBorderWidth: designTokens.borders.boxWidth,
+      labelBorderWidth: designTokens.borders.labelWidth,
+      buttonBorderWidth: designTokens.borders.buttonWidth,
       cardBorder: stringValue(componentRecipe.card.border),
       inputBorder: stringValue(componentRecipe.input.border),
       headerBorderStyle: stringValue(componentRecipe.header.borderBottom),
+      boxRadius: `${designTokens.radii.card}px`,
+      labelRadius: `${designTokens.radii.badge}px`,
+      buttonRadius: `${designTokens.radii.button}px`,
     },
   };
 }
@@ -200,10 +229,13 @@ function getThemeVars(theme: ThemeOption) {
     "--subtle-text": theme.tokens.subtleText,
     "--border": theme.tokens.border,
     "--accent": theme.tokens.accent,
+    "--hover": theme.tokens.hover,
     "--primary-button": theme.tokens.primaryButton,
     "--primary-button-text": theme.tokens.primaryButtonText,
     "--secondary-button": theme.tokens.secondaryButton,
     "--secondary-button-text": theme.tokens.secondaryButtonText,
+    "--selected-button": theme.tokens.selectedButton,
+    "--selected-button-text": theme.tokens.selectedButtonText,
     "--danger-button": theme.tokens.dangerButton,
     "--danger-button-text": theme.tokens.dangerButtonText,
     "--success": theme.tokens.success,
@@ -212,8 +244,14 @@ function getThemeVars(theme: ThemeOption) {
     "--info": theme.tokens.info,
     "--label-text": theme.tokens.labelText,
     "--border-width": theme.tokens.borderWidth,
+    "--box-border-width": theme.tokens.boxBorderWidth,
+    "--label-border-width": theme.tokens.labelBorderWidth,
+    "--button-border-width": theme.tokens.buttonBorderWidth,
     "--card-border": theme.tokens.cardBorder,
     "--input-border": theme.tokens.inputBorder,
     "--header-border-style": theme.tokens.headerBorderStyle,
+    "--box-radius": theme.tokens.boxRadius,
+    "--label-radius": theme.tokens.labelRadius,
+    "--button-radius": theme.tokens.buttonRadius,
   } as CSSProperties;
 }

@@ -9,7 +9,7 @@ description: Generate design-system UI components, build new design-system-style
 
 Use this skill to generate and apply the selected design-system theme through the platform-specific styling file: `styling.gen.swift` for iOS, `styling.gen.kt` for Android, and `styling.gen.ts` for React TypeScript web. After generation, that generated styling file is the implementation source for tokens, component wrappers, variants, recipes, and interaction states.
 
-Use the `light` theme configuration by default. If the user names another theme configuration, such as `use oms`, read `SPEC.md` and `theme.json` from that configuration directory instead. Treat `theme.json` as the machine-readable generation source and `SPEC.md` as human/agent guidance.
+Use the `light` theme configuration by default. If the user names another theme configuration, such as `use oms`, read `themes/SPEC.md` plus `themes/<theme-name>.json`. Treat the selected theme JSON as the machine-readable generation source and `themes/SPEC.md` as generic human/agent guidance for applying any theme.
 
 ## Proposal Gate
 
@@ -46,13 +46,13 @@ Structure proposal responses like this:
 
 ## 🌟 Theme
 
-[Evaluate the app against the selected theme configuration's SPEC.md. State the exact theme/component changes to make. Sort proposals under priority headings: "#### P1", then "#### P2", then "#### P3". Omit empty priority headings. Put plain bullet points under each heading. Use direct wording and avoid alternatives.]
+[Evaluate the app against `themes/SPEC.md` and the selected theme configuration's `theme.json`. State the exact theme/component changes to make. Sort proposals under priority headings: "#### P1", then "#### P2", then "#### P3". Omit empty priority headings. Put plain bullet points under each heading. Use direct wording and avoid alternatives.]
 
 ---
 
 ## 🧱 Design
 
-[Evaluate the app against designs/web/SPEC.md for web or designs/mobile/SPEC.md for iOS/Android. State the exact pages/screens, flows, navigation structures, content placement, and layout changes to implement. Sort proposals under priority headings: "#### P1", then "#### P2", then "#### P3". Omit empty priority headings. Put plain bullet points under each heading. Use direct wording such as "Add X page", "Move Y into Z", or "Remove X".]
+[Evaluate the app against `designs/web.md` for web or `designs/mobile.md` for iOS/Android. State the exact pages/screens, flows, navigation structures, content placement, and layout changes to implement. Sort proposals under priority headings: "#### P1", then "#### P2", then "#### P3". Omit empty priority headings. Put plain bullet points under each heading. Use direct wording such as "Add X page", "Move Y into Z", or "Remove X".]
 
 ---
 
@@ -67,13 +67,13 @@ Say `go ahead` to integrate all changes, or tell me which proposed changes to do
    - **New app from idea**: the user must provide the target platform(s) (`ios`, `android`, and/or `web`) and the app idea. If either is missing, ask for only that missing input. Propose the app structure before building from scratch, including how the idea will use the shared generated styling file for each platform: `styling.gen.swift` for iOS, `styling.gen.kt` for Android, and `styling.gen.ts` for React TypeScript web. Question the first obvious layout; make the proposal feel modern and organized, using tabs, segmented controls, sidebars, split views, or section navigation when one long page would feel cluttered.
    - **Existing project update**: inspect the current project, identify its platform(s), and propose how to generate or refresh the relevant styling file(s), then replace local one-off styling with semantic usage of the generated wrappers/recipes. Preserve user changes and avoid broad rewrites. Review the existing layout choices and propose modernization when possible, especially by breaking crowded single-page screens into tabs, sections, or clearer navigation.
    - **List theme options**: if the user asks what theme configurations are available, run `python3 /path/to/design-architect/scripts/list_theme_options.py` and use the script output as the source of truth. Respond with a short, polished Markdown list titled `Available theme options`, with each option formatted as `- **<name>**: <description>`.
-   - **Create theme config**: if the user asks to create a new theme configuration, read `themes/TEMPLATE.md`, then propose copying `themes/light/SPEC.md` and `themes/light/theme.json` into `themes/<new-name>/`, then updating those two copied files to match the user's new theme specifications and the required theme interface. After approval, create the directory, copy the default files, update `SPEC.md` frontmatter plus `theme.json` metadata with the new `name` and `description`, revise `SPEC.md` for the new theme, and keep `theme.json` aligned with the selected tokens.
-   - **Create design spec**: if the user asks to create a new design spec, read `designs/TEMPLATE.md`, then create `designs/<new-name>/SPEC.md` from that template. Update the frontmatter `name` and `description`, then revise the scope, design patterns, and validation checklist to match the user's design specifications.
+   - **Create theme config**: if the user asks to create a new theme configuration, inspect `themes/SPEC.md` and `themes/theme.schema.json`, then propose copying `themes/light.json` into `themes/<new-name>.json` and updating it to match the user's new theme specifications and the required theme schema. After approval, copy the default theme JSON, update its metadata with the new `name` and `description`, and keep it valid against `themes/theme.schema.json`.
+   - **Create design spec**: if the user asks to create a new design spec, copy `designs/web.md` into `designs/<new-name>.md`. Update the frontmatter `name` and `description`, then revise the scope, design patterns, and validation checklist to match the user's design specifications.
 2. Identify the project root for the current task. Default to the current working directory.
 3. Read the relevant reference files and present the proposal using the required proposal response format.
 4. Evaluate new-project and existing-project proposals in two categories:
-   - **Theme**: select a theme configuration, read its `SPEC.md` and `theme.json`, then verify whether the app uses that configuration's design system specifications for color, typography, motion, iconography, product voice, and component variants. Use `themes/light/` by default. If the user says `use oms` or names another available configuration, use `themes/<name>/` instead. Propose any design-token, component, styling, or interaction changes needed to align the app.
-   - **Design**: read `designs/web/SPEC.md` for web projects and `designs/mobile/SPEC.md` for iOS or Android projects. If a task covers multiple platforms or named design specs, read each matching file under `designs/`. Treat the matching design instructions as mandatory. Analyze what each existing or proposed page/screen is doing, verify whether each page/screen aligns with the required design patterns, and propose structural changes based on required flows and page/screen patterns. Always verify that the app has a separate `Home`, landing, welcome, or introduction page/screen that introduces and sells the app before the first real product workflow, with a clear primary CTA that routes to the first real page/screen. Check whether authentication requires sign-in/sign-up/recovery/verification pages or screens, where the main content should live, which dashboard/detail/list/form/settings pages or screens are needed, and whether navigation matches the target platform. Check every visible button, link, nav item, CTA, footer link, toolbar action, tab, list row, and in-app route target; if it points to a page/screen or flow that does not exist, propose integrating that missing page/screen or removing/retargeting the control when the destination should not exist. Evaluate whether the app exposes debug, implementation, or environment data in the UI, such as `server is ready`, raw API responses, localhost URLs, stack traces, test IDs, sandbox mode labels, mock/dev banners, console output, feature-flag names, or similar non-product information; propose removing or replacing it with product-appropriate states unless the user explicitly requires an environment indicator.
+   - **Theme**: select a theme configuration, read `themes/SPEC.md` and the selected `themes/<name>.json`, then verify whether the app uses that theme's design system specifications for color, typography, motion, iconography, product voice, and component variants. Use `themes/light.json` by default. If the user says `use oms` or names another available configuration, use `themes/<name>.json` instead. Propose any design-token, component, styling, or interaction changes needed to align the app.
+   - **Design**: read `designs/web.md` for web projects and `designs/mobile.md` for iOS or Android projects. If a task covers multiple platforms or named design specs, read each matching `.md` file under `designs/`. Treat the matching design instructions as mandatory. Analyze what each existing or proposed page/screen is doing, verify whether each page/screen aligns with the required design patterns, and propose structural changes based on required flows and page/screen patterns. Always verify that the app has a separate `Home`, landing, welcome, or introduction page/screen that introduces and sells the app before the first real product workflow, with a clear primary CTA that routes to the first real page/screen. Check whether authentication requires sign-in/sign-up/recovery/verification pages or screens, where the main content should live, which dashboard/detail/list/form/settings pages or screens are needed, and whether navigation matches the target platform. Check every visible button, link, nav item, CTA, footer link, toolbar action, tab, list row, and in-app route target; if it points to a page/screen or flow that does not exist, propose integrating that missing page/screen or removing/retargeting the control when the destination should not exist. Evaluate whether the app exposes debug, implementation, or environment data in the UI, such as `server is ready`, raw API responses, localhost URLs, stack traces, test IDs, sandbox mode labels, mock/dev banners, console output, feature-flag names, or similar non-product information; propose removing or replacing it with product-appropriate states unless the user explicitly requires an environment indicator.
 5. Make proposals for both categories based on this skill's instructions, even when one category has no major issues. State when no changes are needed for a category. Keep proposals decisive: do not include option lists, unresolved alternatives, or vague recommendations. If several valid approaches exist, choose one and propose that specific implementation.
 6. Wait for the user to approve the proposal before running generators, editing files, or integrating changes.
 7. For new app and existing project update modes, run the bundled generator only for the requested or detected platform after approval. Always pass `--platform` and the selected theme with `--theme`; use `light` when the user did not name a theme:
@@ -96,14 +96,13 @@ Say `go ahead` to integrate all changes, or tell me which proposed changes to do
 
 ## Reference Files
 
-- Select the theme configuration before reading theme files. Default to `themes/light/`. If the user says `use oms`, read `themes/oms/`. If they name another available theme configuration, read `themes/<name>/`.
-- Read `themes/TEMPLATE.md` when creating or validating theme configurations, or whenever a theme appears incomplete.
-- Each theme configuration directory must contain `SPEC.md` and `theme.json`.
-- Read `theme.json` as the source of truth for generated design tokens. It must conform to `themes/theme.schema.json`.
-- Read the selected theme configuration's `SPEC.md` before applying visual foundations, typography, color, motion, icon, product voice, or component decisions. Its frontmatter must define `name` and `description`.
-- Read `designs/web/SPEC.md` whenever making web page design decisions to identify required page types, states, navigation structure, and page-level layout rules.
-- Read `designs/mobile/SPEC.md` whenever making iOS or Android app design decisions to identify required screen types, states, navigation structure, and screen-level layout rules.
-- Read `designs/TEMPLATE.md` when creating a new design spec. New design specs belong in `designs/<new-name>/SPEC.md`.
+- Select the theme configuration before reading theme files. Default to `themes/light.json`. If the user says `use oms`, read `themes/oms.json`. If they name another available theme configuration, read `themes/<name>.json`.
+- Read `themes/SPEC.md` before applying visual foundations, typography, color, motion, icon, product voice, component usage, state handling, or layout patterns. Its frontmatter must define `name` and `description`, and its guidance applies generically to every theme.
+- Each theme configuration must be a JSON file directly under `themes/`, such as `themes/light.json`, `themes/dark.json`, or `themes/oms.json`.
+- Read the selected theme JSON as the source of truth for generated design tokens. It must conform to `themes/theme.schema.json`.
+- Read `designs/web.md` whenever making web page design decisions to identify required page types, states, navigation structure, and page-level layout rules.
+- Read `designs/mobile.md` whenever making iOS or Android app design decisions to identify required screen types, states, navigation structure, and screen-level layout rules.
+- When creating a new design spec, copy `designs/web.md` into `designs/<new-name>.md`, then update it for the requested design.
 
 ## Theme Commands
 
@@ -120,15 +119,15 @@ Say `go ahead` to integrate all changes, or tell me which proposed changes to do
   - **<name>**: <description>
   - **<name>**: <description>
   ```
-- To create a new theme configuration, read `themes/TEMPLATE.md`, copy `themes/light/SPEC.md` and `themes/light/theme.json` into `themes/<new-name>/`, then update the copied files based on the user's theme specifications. Keep `SPEC.md` frontmatter concise and include only `name` and `description`. Keep `theme.json` valid against `themes/theme.schema.json`.
-- To create a new design spec, copy `designs/TEMPLATE.md` into `designs/<new-name>/SPEC.md`, then update the copied file based on the user's design specifications. Keep `SPEC.md` frontmatter concise and include only `name` and `description`.
+- To create a new theme configuration, inspect `themes/SPEC.md` and `themes/theme.schema.json`, copy `themes/light.json` into `themes/<new-name>.json`, then update the copied file based on the user's theme specifications. Keep the theme JSON valid against `themes/theme.schema.json`; do not create a per-theme directory or per-theme `SPEC.md`.
+- To create a new design spec, copy `designs/web.md` into `designs/<new-name>.md`, then update the copied file based on the user's design specifications. Keep frontmatter concise and include only `name` and `description`.
 - To generate components for a selected theme, run:
 
   ```bash
   python3 /path/to/design-architect/scripts/generate_components.py <project-root> --platform <swift|kotlin|typescript> --theme <theme-name>
   ```
 
-  The generator reads `themes/<theme-name>/theme.json`, validates it, and renders only the selected platform file from that theme. If the user does not name a theme, pass `--theme light`.
+  The generator reads `themes/<theme-name>.json`, validates it, and renders only the selected platform file from that theme. If the user does not name a theme, pass `--theme light`.
 
 ## Product Rules
 

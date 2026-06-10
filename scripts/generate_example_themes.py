@@ -16,7 +16,7 @@ OUTPUT_DIR = ROOT / "example" / "src" / "generated" / "themes"
 
 
 def theme_slugs() -> list[str]:
-    return sorted(path.name for path in THEMES_DIR.iterdir() if (path / "theme.json").is_file())
+    return sorted(path.stem for path in THEMES_DIR.glob("*.json") if path.name != "theme.schema.json")
 
 
 def main() -> int:

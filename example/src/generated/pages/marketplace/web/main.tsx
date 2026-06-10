@@ -201,7 +201,7 @@ const listings: Listing[] = [
 const categories = ["All", "Outerwear", "Tops", "Bottoms", "Shoes", "Accessories"] as const;
 const conditions = ["Any", "Like new", "Excellent", "Good", "Worn in"] as const;
 
-const buttonRecipe: Record<"primary" | "secondary", StyleRecipe> = {
+const buttonRecipe: Record<"primary" | "secondary" | "selected", StyleRecipe> = {
   primary: {
     background: "var(--color-primary-button)",
     color: "var(--color-primary-button-text)",
@@ -211,6 +211,12 @@ const buttonRecipe: Record<"primary" | "secondary", StyleRecipe> = {
     background: "var(--color-secondary-surface)",
     color: "var(--color-primary-text)",
     border: "var(--border-width) solid var(--color-border)",
+  },
+  selected: {
+    background: "var(--color-selected-button)",
+    color: "var(--color-selected-button-text)",
+    border: "var(--border-width) solid var(--color-border)",
+    borderRadius: "var(--radius-button)",
   },
 };
 
@@ -238,10 +244,10 @@ const componentRecipe = {
     color: "var(--color-secondary-text)",
   },
   badge: {
-    info: { background: "var(--color-info-soft)", color: "var(--color-info)" },
-    neutral: { background: "var(--color-secondary-surface)", color: "var(--color-primary-text)" },
-    success: { background: "var(--color-success-soft)", color: "var(--color-success)" },
-    warning: { background: "var(--color-warning-soft)", color: "var(--color-warning)" },
+    info: { background: "var(--color-info-soft)", color: "var(--color-info)", border: "var(--label-border-width) solid var(--color-border)", borderRadius: "var(--radius-badge)" },
+    neutral: { background: "var(--color-secondary-surface)", color: "var(--color-primary-text)", border: "var(--label-border-width) solid var(--color-border)", borderRadius: "var(--radius-badge)" },
+    success: { background: "var(--color-success-soft)", color: "var(--color-success)", border: "var(--label-border-width) solid var(--color-border)", borderRadius: "var(--radius-badge)" },
+    warning: { background: "var(--color-warning-soft)", color: "var(--color-warning)", border: "var(--label-border-width) solid var(--color-border)", borderRadius: "var(--radius-badge)" },
   },
 } as const;
 
@@ -433,8 +439,11 @@ function webThemeVars(theme: ThemeOption): ThemeVars {
     "--color-border": theme.tokens.border,
     "--color-focus-ring": theme.tokens.accent,
     "--color-brand": theme.tokens.accent,
+    "--color-hover": theme.tokens.hover,
     "--color-primary-button": theme.tokens.primaryButton,
     "--color-primary-button-text": theme.tokens.primaryButtonText,
+    "--color-selected-button": theme.tokens.selectedButton,
+    "--color-selected-button-text": theme.tokens.selectedButtonText,
     "--color-success": theme.tokens.success,
     "--color-success-soft": softColor(theme.tokens.success, theme.tokens.page),
     "--color-warning": theme.tokens.warning,
@@ -445,12 +454,13 @@ function webThemeVars(theme: ThemeOption): ThemeVars {
     "--line-height": "1.2",
     "--font-heading": "700",
     "--font-body": "500",
-    "--border-width": theme.tokens.borderWidth,
-    "--radius-card": "24px",
-    "--radius-input": "12px",
-    "--radius-button": "8px",
-    "--radius-button-large": "12px",
-    "--radius-badge": "16px",
+    "--border-width": theme.tokens.buttonBorderWidth,
+    "--label-border-width": theme.tokens.labelBorderWidth,
+    "--radius-card": theme.tokens.boxRadius,
+    "--radius-input": theme.tokens.buttonRadius,
+    "--radius-button": theme.tokens.buttonRadius,
+    "--radius-button-large": theme.tokens.buttonRadius,
+    "--radius-badge": theme.tokens.labelRadius,
     "--motion-hover": "120ms ease",
     "--motion-base": "200ms ease",
   };
