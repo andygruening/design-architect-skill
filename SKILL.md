@@ -7,7 +7,7 @@ description: Generate design-system UI components, build new design-system-style
 
 ## Source
 
-Use this skill to generate and apply the selected design-system theme through the platform-specific styling file: `styling.gen.swift` for iOS, `styling.gen.kt` for Android, and `styling.gen.ts` for React TypeScript web. After generation, that generated styling file is the implementation source for tokens, component wrappers, variants, recipes, and interaction states.
+Use this skill to generate and apply the selected design-system theme through the platform-specific styling file: `styling.gen.swift` for iOS, `styling.gen.kt` for Android, and `styling.gen.ts` for React TypeScript web. After generation, that generated styling file is the required implementation source for tokens, component wrappers, variants, recipes, and interaction states. All platform UI must consume tokens and components from the generated styling file whenever the generated file provides them.
 
 Use the `light` theme configuration by default. If the user names another theme configuration, such as `use oms`, read `themes/SPEC.md` plus `themes/<theme-name>.json`. Treat the selected theme JSON as the machine-readable generation source and `themes/SPEC.md` as generic human/agent guidance for applying any theme.
 
@@ -64,8 +64,8 @@ Say `go ahead` to integrate all changes, or tell me which proposed changes to do
 ## Default Workflow
 
 1. Identify the trigger mode:
-   - **New app from idea**: the user must provide the target platform(s) (`ios`, `android`, and/or `web`) and the app idea. If either is missing, ask for only that missing input. Propose the app structure before building from scratch, including how the idea will use the shared generated styling file for each platform: `styling.gen.swift` for iOS, `styling.gen.kt` for Android, and `styling.gen.ts` for React TypeScript web. Question the first obvious layout; make the proposal feel modern and organized, using tabs, segmented controls, sidebars, split views, or section navigation when one long page would feel cluttered.
-   - **Existing project update**: inspect the current project, identify its platform(s), and propose how to generate or refresh the relevant styling file(s), then replace local one-off styling with semantic usage of the generated wrappers/recipes. Preserve user changes and avoid broad rewrites. Review the existing layout choices and propose modernization when possible, especially by breaking crowded single-page screens into tabs, sections, or clearer navigation.
+   - **New app from idea**: the user must provide the target platform(s) (`ios`, `android`, and/or `web`) and the app idea. If either is missing, ask for only that missing input. Propose the app structure before building from scratch, including how the idea will use the shared generated styling file for each platform: `styling.gen.swift` for iOS, `styling.gen.kt` for Android, and `styling.gen.ts` for React TypeScript web. State that generated tokens/components are mandatory for colors, typography, spacing, controls, variants, and states. Question the first obvious layout; make the proposal feel modern and organized, using tabs, segmented controls, sidebars, split views, or section navigation when one long page would feel cluttered.
+   - **Existing project update**: inspect the current project, identify its platform(s), and propose how to generate or refresh the relevant styling file(s), then replace local one-off styling with semantic usage of the generated wrappers/recipes. Treat app-local colors, radii, typography scales, button/input/card styles, and state styles as migration targets whenever equivalent generated tokens/components exist. Preserve user changes and avoid broad rewrites. Review the existing layout choices and propose modernization when possible, especially by breaking crowded single-page screens into tabs, sections, or clearer navigation.
    - **List theme options**: if the user asks what theme configurations are available, run `python3 /path/to/design-architect/scripts/list_theme_options.py` and use the script output as the source of truth. Respond with a short, polished Markdown list titled `Available theme options`, with each option formatted as `- **<name>**: <description>`.
    - **Create theme config**: if the user asks to create a new theme configuration, inspect `themes/SPEC.md` and `themes/theme.schema.json`, then propose copying `themes/light.json` into `themes/<new-name>.json` and updating it to match the user's new theme specifications and the required theme schema. After approval, copy the default theme JSON, update its metadata with the new `name` and `description`, and keep it valid against `themes/theme.schema.json`.
    - **Create design spec**: if the user asks to create a new design spec, copy `designs/web.md` into `designs/<new-name>.md`. Update the frontmatter `name` and `description`, then revise the scope, design patterns, and validation checklist to match the user's design specifications.
@@ -86,13 +86,18 @@ Say `go ahead` to integrate all changes, or tell me which proposed changes to do
    - `styling.gen.swift`: SwiftUI tokens and reusable iOS components.
    - `styling.gen.kt`: Jetpack Compose/Kotlin tokens and reusable Android components.
    - `styling.gen.ts`: TypeScript tokens, typed variants, and React-friendly component recipes for web parity.
-9. If the user explicitly requires a different package name, rerun with:
+9. Integrate the generated styling file as the required design-system boundary:
+   - iOS must use `DesignTokens`, generated SwiftUI components, generated variants, and generated `ButtonStyle`/wrapper types from `styling.gen.swift`.
+   - Android must use generated `DesignColors`, `DesignTypography`, `DesignSpacing`, generated Compose wrappers, and generated variants from `styling.gen.kt`.
+   - React TypeScript must use `designTokens`, generated recipe exports, and generated variant types from `styling.gen.ts`.
+   - Do not duplicate generated token values or recreate generated component styling in app files. If a needed primitive is missing from the generated file, update the generator or theme schema instead of hardcoding a parallel design system.
+10. If the user explicitly requires a different package name, rerun with:
 
    ```bash
    python3 /path/to/design-architect/scripts/generate_components.py <project-root> --platform kotlin --theme <theme-name> --kotlin-package com.example.designsystem
    ```
 
-10. Keep generated file names stable. `styling.gen.ts` is the TypeScript design-token/component-recipe output; Kotlin implementation belongs in `styling.gen.kt`.
+11. Keep generated file names stable. `styling.gen.ts` is the TypeScript design-token/component-recipe output; Kotlin implementation belongs in `styling.gen.kt`.
 
 ## Reference Files
 
@@ -142,8 +147,11 @@ Say `go ahead` to integrate all changes, or tell me which proposed changes to do
 
 - Put generated implementation files at the project root.
 - For new app mode, build only the requested platform apps: iOS means SwiftUI, Android means Jetpack Compose/Kotlin, and web means React TypeScript. The generated styling file for that platform is the source of component styling. Once generated, use `styling.gen.swift`, `styling.gen.kt`, or `styling.gen.ts` as the implementation source for tokens, components, variants, recipes, and interaction states.
+- Using generated styling is mandatory for all platforms. App code must import and consume generated tokens, generated component wrappers, generated variants, and generated interaction-state recipes whenever those exports exist.
+- Do not hardcode colors, spacing, radii, typography, borders, shadows, motion values, button styles, input styles, badge styles, card styles, or selected/hover/focus/disabled states in app code when a generated token, component, variant, or recipe exists.
+- If generated styling is insufficient, extend the selected theme JSON, `themes/theme.schema.json`, or `scripts/generate_components.py` so the missing token/component becomes generated. Do not create a second app-local design system.
 - React TypeScript apps must include interaction styling for hover, active/click/pressed, focus-visible, and disabled states for buttons, icon buttons, fields, dropdowns, tabs, and other interactive controls where applicable. Derive those states from `styling.gen.ts` recipes and tokens.
-- Keep app call sites semantic. App screens should consume generated component variants, not restyle them.
+- Keep app call sites semantic. App screens should consume generated component variants, not restyle them or reimplement their token values locally.
 - Prefer SwiftUI `ButtonStyle` and composable wrappers for Swift.
 - Prefer Jetpack Compose Material 3 wrappers for Kotlin.
 - TypeScript should export tokens, typed variants, and React-friendly component style recipes rather than raw prose.

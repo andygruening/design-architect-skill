@@ -4,30 +4,30 @@
 export const designTheme = {
   id: "light",
   name: "Light",
-  description: "Default light theme configuration with white page backgrounds, light gray accents, Roboto typography, and functional product copy.",
+  description: "Light theme with white backgrounds and surfaces, black primary buttons, bordered white secondary buttons, and compact border radii.",
 } as const;
 
 export const designTokens = {
   colors: {
     page: "#FFFFFF",
     surface: "#FFFFFF",
-    secondarySurface: "#F3F4F6",
+    secondarySurface: "#FFFFFF",
     header: "#FFFFFF",
-    headerBorder: "#E5E7EB",
+    headerBorder: "#F3F4F6",
     footer: "#FFFFFF",
     primaryText: "#111827",
     secondaryText: "#4B5563",
     placeholderText: "#9CA3AF",
-    border: "#D1D5DB",
-    focusRing: "#E5E7EB",
-    brand: "#E5E7EB",
-    hover: "#E5E7EB",
-    primaryButton: "#111827",
+    border: "#E5E7EB",
+    focusRing: "#D1D5DB",
+    brand: "#111827",
+    hover: "#F9FAFB",
+    primaryButton: "#000000",
     primaryButtonText: "#FFFFFF",
-    secondaryButton: "#F3F4F6",
+    secondaryButton: "#FFFFFF",
     secondaryButtonText: "#111827",
-    selectedButton: "#111827",
-    selectedButtonText: "#FFFFFF",
+    selectedButton: "#F3F4F6",
+    selectedButtonText: "#000000",
     danger: "#DC2626",
     dangerSoft: "#FEF2F2",
     dangerText: "#FFFFFF",
@@ -35,52 +35,145 @@ export const designTokens = {
     successSoft: "#ECFDF5",
     warning: "#B45309",
     warningSoft: "#FFF7ED",
-    info: "#6B7280",
+    info: "#4B5563",
     infoSoft: "#F3F4F6",
   },
   rawColors: {
-    "border": "#D1D5DB",
-    "brand": "#E5E7EB",
-    "danger": "#DC2626",
-    "dangerSoft": "#FEF2F2",
-    "dangerText": "#FFFFFF",
-    "focusRing": "#E5E7EB",
-    "footer": "#FFFFFF",
-    "header": "#FFFFFF",
-    "headerBorder": "#E5E7EB",
-    "hover": "#E5E7EB",
-    "info": "#6B7280",
-    "infoSoft": "#F3F4F6",
-    "page": "#FFFFFF",
-    "placeholderText": "#9CA3AF",
-    "primaryButton": "#111827",
-    "primaryButtonText": "#FFFFFF",
-    "primaryText": "#111827",
-    "secondaryButton": "#F3F4F6",
-    "secondaryButtonText": "#111827",
-    "secondarySurface": "#F3F4F6",
-    "secondaryText": "#4B5563",
-    "selectedButton": "#111827",
-    "selectedButtonText": "#FFFFFF",
-    "success": "#047857",
-    "successSoft": "#ECFDF5",
-    "surface": "#FFFFFF",
-    "warning": "#B45309",
-    "warningSoft": "#FFF7ED"
+    "background": {
+      "canvas": "#FFFFFF",
+      "page": "#FFFFFF",
+      "search": "#FFFFFF",
+      "searchActive": "#F9FAFB",
+      "searchSelected": "#F3F4F6",
+      "surface": "#FFFFFF",
+      "surfaceHover": "#F9FAFB",
+      "surfaceInverse": "#111827",
+      "surfaceSelected": "#F3F4F6"
+    },
+    "border": {
+      "default": "#E5E7EB",
+      "divider": "rgba(0,0,0,0.05)",
+      "focus": "#D1D5DB",
+      "hover": "#D1D5DB",
+      "strongHover": "#111827",
+      "subtle": "#F3F4F6"
+    },
+    "brand": {
+      "border": "#E5E7EB",
+      "default": "#111827",
+      "hover": "#000000",
+      "ring": "#D1D5DB",
+      "surface": "#F3F4F6"
+    },
+    "button": {
+      "disabledBg": "#F3F4F6",
+      "disabledText": "#9CA3AF",
+      "primaryActiveBg": "#1F2937",
+      "primaryBg": "#000000",
+      "primaryHoverBg": "#111827",
+      "primaryText": "#FFFFFF",
+      "secondaryActiveBg": "#F9FAFB",
+      "secondaryActiveBorder": "#9CA3AF",
+      "secondaryBg": "#FFFFFF",
+      "secondaryBorder": "#D1D5DB",
+      "secondaryHoverBorder": "#111827",
+      "secondaryText": "#111827"
+    },
+    "foreground": {
+      "disabled": "#D1D5DB",
+      "inverse": "#FFFFFF",
+      "link": "#111827",
+      "linkHover": "#000000",
+      "primary": "#111827",
+      "secondary": "#4B5563",
+      "tertiary": "#9CA3AF"
+    },
+    "semantic": {
+      "danger": {
+        "bg": "#FEF2F2",
+        "border": "#FECACA",
+        "buttonActiveBg": "#991B1B",
+        "buttonBg": "#DC2626",
+        "buttonHoverBg": "#EF4444",
+        "fg": "#B91C1C"
+      },
+      "info": {
+        "bg": "#F3F4F6",
+        "border": "#E5E7EB",
+        "fg": "#4B5563"
+      },
+      "success": {
+        "bg": "#ECFDF5",
+        "border": "#A7F3D0",
+        "fg": "#047857"
+      },
+      "warning": {
+        "bg": "#FFF7ED",
+        "border": "#FED7AA",
+        "fg": "#B45309"
+      }
+    }
   },
   typography: {
-    fontFamily: "Roboto",
+    fontFamily: "Fustat",
     headingWeight: 700,
     bodyWeight: 500,
     lineHeight: 1.2,
     raw: {
+      "documentation": {
+        "family": "Inter"
+      },
+      "mono": {
+        "family": "Geist"
+      },
       "product": {
         "bodyWeight": 500,
         "boldWeight": 700,
-        "family": "Roboto",
+        "family": "Fustat",
         "lineHeight": 1.2
       },
-      "scale": {}
+      "scale": {
+        "body1": {
+          "size": 20,
+          "weight": 500
+        },
+        "body2": {
+          "size": 18,
+          "weight": 500
+        },
+        "body3": {
+          "size": 16,
+          "weight": 500
+        },
+        "body4": {
+          "size": 14,
+          "weight": 500
+        },
+        "body5": {
+          "size": 12,
+          "weight": 500
+        },
+        "h1": {
+          "size": 48,
+          "weight": 700
+        },
+        "h2": {
+          "size": 40,
+          "weight": 700
+        },
+        "h3": {
+          "size": 32,
+          "weight": 700
+        },
+        "h4": {
+          "size": 28,
+          "weight": 700
+        },
+        "h5": {
+          "size": 24,
+          "weight": 700
+        }
+      }
     },
   },
   spacing: {
@@ -95,20 +188,33 @@ export const designTokens = {
       32,
       40,
       48,
-      64
+      64,
+      80,
+      96,
+      128
     ]
   },
   radii: {
     button: 8,
     buttonLarge: 8,
     input: 8,
-    badge: 8,
-    card: 8,
+    badge: 999,
+    card: 16,
     raw: {
-      "badge": 8,
+      "2xl": 24,
+      "badge": 999,
       "button": 8,
-      "card": 8,
-      "input": 8
+      "card": 16,
+      "input": 8,
+      "lg": 12,
+      "md": 8,
+      "menu": 12,
+      "modal": 16,
+      "pill": 999,
+      "popover": 16,
+      "sm": 6,
+      "xl": 16,
+      "xs": 4
     },
   },
   borders: {
@@ -118,42 +224,76 @@ export const designTokens = {
     buttonWidth: "1px",
     focusRingWidth: "2px",
     raw: {
-      "boxWidth": "1px",
-      "buttonWidth": "1px",
-      "defaultWidth": "1",
-      "labelWidth": "1px"
+      "componentBorders": {
+        "buttonSecondary": "1px solid button.secondaryBorder",
+        "card": "1px solid border.default",
+        "input": "1px solid border.default",
+        "tableRow": "1px solid border.default"
+      },
+      "defaultWidth": 1,
+      "focusRingWidth": 2
     },
   },
   shadows: {
-    "button": "none",
+    "button": "0 1px 2px 0 rgba(0,0,0,0.05)",
     "card": "none",
-    "drawer": "none",
-    "modal": "none",
-    "popover": "none"
+    "drawer": "0 4px 6px -4px rgba(0,0,0,0.10), 0 10px 15px -3px rgba(0,0,0,0.10)",
+    "modal": "0 4px 6px -4px rgba(0,0,0,0.10), 0 10px 15px -3px rgba(0,0,0,0.10)",
+    "popover": "0 4px 6px -4px rgba(0,0,0,0.10), 0 10px 15px -3px rgba(0,0,0,0.10)"
   },
   motion: {
-    hover: "120ms ease",
-    base: "200ms ease",
-    modal: "320ms ease",
+    hover: "120ms ease-out",
+    base: "200ms ease-out",
+    modal: "320ms ease-out",
     raw: {
-      "base": "200ms ease",
-      "hover": "120ms ease",
-      "modal": "320ms ease"
+      "allowed": [
+        "fade",
+        "slide"
+      ],
+      "base": "200ms ease-out",
+      "disallowed": [
+        "bounce",
+        "spring",
+        "parallax",
+        "scale-shrink"
+      ],
+      "hover": "120ms ease-out",
+      "modal": "320ms ease-out"
     },
   },
   components: {
+    "appShell": {
+      "activeNavBg": "brand.surface",
+      "activeNavText": "brand.hover",
+      "mainBg": "background.canvas",
+      "sidebarBg": "background.surface",
+      "sidebarWidth": 240,
+      "topNavHeight": 64
+    },
     "badge": {
       "fontSize": 12,
+      "fontWeight": 500,
       "paddingX": 10,
       "paddingY": 3,
-      "radius": 8
+      "radius": 999,
+      "tableDotRequired": true
     },
     "button": {
       "sizes": {
         "lg": {
-          "fontSize": 14,
+          "fontSize": 16,
           "height": 40,
           "paddingX": 12
+        },
+        "md": {
+          "fontSize": 14,
+          "height": 32,
+          "paddingX": 12
+        },
+        "sm": {
+          "fontSize": 12,
+          "height": 30,
+          "paddingX": 8
         }
       },
       "states": [
@@ -171,18 +311,61 @@ export const designTokens = {
       ]
     },
     "card": {
-      "border": "colors.border",
+      "border": "border.default",
       "padding": [
+        16,
+        20,
         24
       ],
-      "radius": 8,
+      "radius": 16,
       "shadow": "none",
-      "surface": "colors.surface"
+      "surface": "background.surface"
+    },
+    "drawer": {
+      "anchor": "right",
+      "height": "full",
+      "motion": "slide"
     },
     "input": {
+      "activeHeight": 44,
       "height": 40,
+      "helperTextRequired": true,
+      "labelRequired": true,
       "paddingX": 12,
-      "radius": 8
+      "radius": 8,
+      "states": [
+        "default",
+        "active",
+        "filled",
+        "focusFilled",
+        "disabled",
+        "destructive"
+      ]
+    },
+    "modal": {
+      "desktopWidth": 400,
+      "mobilePresentation": "bottom-sheet",
+      "radius": 16
+    },
+    "table": {
+      "cellPaddingX": 18,
+      "cellPaddingY": 12,
+      "headerBg": "background.canvas",
+      "headerFont": "documentation",
+      "headerSize": 11,
+      "monoColumns": [
+        "addresses",
+        "timestamps",
+        "ids"
+      ],
+      "rowHoverBg": "background.canvas"
+    },
+    "toast": {
+      "paddingX": 20,
+      "paddingY": 16,
+      "placement": "bottom-right",
+      "radius": 16,
+      "shadow": "popover"
     }
   },
 } as const;
@@ -199,9 +382,9 @@ export const buttonRecipe: Record<DesignButtonVariant, StyleRecipe> = {
     borderRadius: designTokens.radii.button,
     minHeight: 40,
     paddingInline: 12,
-    fontSize: 14,
-    hoverBackground: "#E5E7EB",
-    activeBackground: "#E5E7EB",
+    fontSize: 16,
+    hoverBackground: "#111827",
+    activeBackground: "#1F2937",
     disabledBackground: "#F3F4F6",
     disabledColor: "#9CA3AF",
     transition: designTokens.motion.hover,
@@ -213,10 +396,10 @@ export const buttonRecipe: Record<DesignButtonVariant, StyleRecipe> = {
     borderRadius: designTokens.radii.button,
     minHeight: 40,
     paddingInline: 12,
-    fontSize: 14,
-    hoverBorderColor: "#D1D5DB",
-    activeBackground: "#E5E7EB",
-    activeBorderColor: "#D1D5DB",
+    fontSize: 16,
+    hoverBorderColor: "#111827",
+    activeBackground: "#F9FAFB",
+    activeBorderColor: "#9CA3AF",
     disabledBackground: "#F3F4F6",
     disabledColor: "#9CA3AF",
     transition: designTokens.motion.hover,
@@ -228,7 +411,7 @@ export const buttonRecipe: Record<DesignButtonVariant, StyleRecipe> = {
     borderRadius: designTokens.radii.button,
     minHeight: 40,
     paddingInline: 12,
-    fontSize: 14,
+    fontSize: 16,
   },
   dangerPrimary: {
     background: designTokens.colors.danger,
@@ -237,9 +420,9 @@ export const buttonRecipe: Record<DesignButtonVariant, StyleRecipe> = {
     borderRadius: designTokens.radii.button,
     minHeight: 40,
     paddingInline: 12,
-    fontSize: 14,
-    hoverBackground: "#DC2626",
-    activeBackground: "#DC2626",
+    fontSize: 16,
+    hoverBackground: "#EF4444",
+    activeBackground: "#991B1B",
     transition: designTokens.motion.hover,
   },
   dangerSecondary: {
@@ -249,7 +432,7 @@ export const buttonRecipe: Record<DesignButtonVariant, StyleRecipe> = {
     borderRadius: designTokens.radii.button,
     minHeight: 40,
     paddingInline: 12,
-    fontSize: 14,
+    fontSize: 16,
     hoverBackground: designTokens.colors.hover,
     transition: designTokens.motion.hover,
   },
@@ -260,7 +443,7 @@ export const inputRecipe = {
     background: designTokens.colors.secondarySurface,
     color: designTokens.colors.primaryText,
     placeholderColor: designTokens.colors.placeholderText,
-    border: "1px solid #D1D5DB",
+    border: "1px solid #E5E7EB",
     borderRadius: designTokens.radii.input,
     minHeight: 40,
     paddingInline: 12,
@@ -269,7 +452,7 @@ export const inputRecipe = {
   active: {
     borderColor: designTokens.colors.focusRing,
     boxShadow: `0 0 0 ${designTokens.borders.focusRingWidth} ${designTokens.colors.focusRing}`,
-    minHeight: 40,
+    minHeight: 44,
   },
   disabled: {
     background: "#F3F4F6",
@@ -292,28 +475,28 @@ export const badgeRecipe: Record<DesignBadgeVariant, StyleRecipe> = {
 export const cardRecipe = {
   default: {
     background: "#FFFFFF",
-    border: "1px solid #D1D5DB",
+    border: "1px solid #E5E7EB",
     borderRadius: designTokens.radii.card,
     boxShadow: "none",
-    padding: 24,
+    padding: 16,
   },
   resource: {
     background: "#FFFFFF",
     border: `${designTokens.borders.boxWidth} solid ${designTokens.colors.headerBorder}`,
     borderRadius: designTokens.radii.card,
-    padding: 24,
+    padding: 16,
   },
 } as const;
 
 export const tableRecipe = {
   header: {
-    background: "#F3F4F6",
+    background: "#FFFFFF",
     color: designTokens.colors.secondaryText,
-    fontSize: 12,
+    fontSize: 11,
   },
   row: {
     borderBottom: "1px solid #E5E7EB",
-    hoverBackground: "#E5E7EB",
+    hoverBackground: "#FFFFFF",
   },
   cell: {
     paddingBlock: 12,
@@ -325,7 +508,7 @@ export const overlayRecipe = {
   modal: {
     background: designTokens.colors.surface,
     border: `${designTokens.borders.boxWidth} solid ${designTokens.colors.border}`,
-    borderRadius: 8,
+    borderRadius: 16,
     boxShadow: designTokens.shadows.modal ?? "none",
     maxWidth: 400,
   },
@@ -337,7 +520,7 @@ export const overlayRecipe = {
   toast: {
     background: designTokens.colors.surface,
     border: `${designTokens.borders.boxWidth} solid ${designTokens.colors.border}`,
-    borderRadius: 8,
+    borderRadius: 16,
     boxShadow: designTokens.shadows.popover ?? "none",
     paddingBlock: 16,
     paddingInline: 20,
@@ -349,8 +532,8 @@ export const appShellRecipe = {
   topNavHeight: 64,
   sidebarBackground: "#FFFFFF",
   mainBackground: "#FFFFFF",
-  activeNavBackground: "#111827",
-  activeNavText: "#FFFFFF",
+  activeNavBackground: "#F3F4F6",
+  activeNavText: "#000000",
 } as const;
 
 export const componentRecipe = {

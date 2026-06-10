@@ -4,83 +4,176 @@
 export const designTheme = {
   id: "dark",
   name: "Dark",
-  description: "Dark theme configuration with black page backgrounds, translucent #ffffff17 component surfaces, white-on-color labels, Roboto typography, and functional product copy.",
+  description: "Dark theme with black backgrounds, dark gray surfaces, white primary buttons, surface secondary buttons, and no borders.",
 } as const;
 
 export const designTokens = {
   colors: {
     page: "#000000",
-    surface: "#ffffff17",
-    secondarySurface: "#ffffff17",
-    header: "#000000",
-    headerBorder: "#ffffff17",
-    footer: "#000000",
+    surface: "#1F2937",
+    secondarySurface: "#1F2937",
+    header: "#1F2937",
+    headerBorder: "#1F2937",
+    footer: "#1F2937",
     primaryText: "#F9FAFB",
     secondaryText: "#D1D5DB",
-    placeholderText: "#6B7280",
-    border: "#ffffff17",
-    focusRing: "#ffffff17",
-    brand: "#ffffff17",
-    hover: "#ffffff17",
+    placeholderText: "#9CA3AF",
+    border: "#1F2937",
+    focusRing: "#374151",
+    brand: "#FFFFFF",
+    hover: "#253244",
     primaryButton: "#FFFFFF",
     primaryButtonText: "#000000",
-    secondaryButton: "#ffffff17",
+    secondaryButton: "#1F2937",
     secondaryButtonText: "#F9FAFB",
-    selectedButton: "#FFFFFF",
-    selectedButtonText: "#000000",
-    danger: "#EF4444",
-    dangerSoft: "#ffffff17",
-    dangerText: "#FFFFFF",
-    success: "#10B981",
-    successSoft: "#064E3B",
-    warning: "#F97316",
-    warningSoft: "#78350F",
-    info: "#4B5563",
-    infoSoft: "#ffffff17",
+    selectedButton: "#374151",
+    selectedButtonText: "#F3F4F6",
+    danger: "#DC2626",
+    dangerSoft: "#450A0A",
+    dangerText: "#000000",
+    success: "#86EFAC",
+    successSoft: "#052E16",
+    warning: "#FDBA74",
+    warningSoft: "#431407",
+    info: "#F9FAFB",
+    infoSoft: "#1F2937",
   },
   rawColors: {
-    "border": "#ffffff17",
-    "brand": "#ffffff17",
-    "danger": "#EF4444",
-    "dangerSoft": "#ffffff17",
-    "dangerText": "#FFFFFF",
-    "focusRing": "#ffffff17",
-    "footer": "#000000",
-    "header": "#000000",
-    "headerBorder": "#ffffff17",
-    "hover": "#ffffff17",
-    "info": "#4B5563",
-    "infoSoft": "#ffffff17",
-    "page": "#000000",
-    "placeholderText": "#6B7280",
-    "primaryButton": "#FFFFFF",
-    "primaryButtonText": "#000000",
-    "primaryText": "#F9FAFB",
-    "secondaryButton": "#ffffff17",
-    "secondaryButtonText": "#F9FAFB",
-    "secondarySurface": "#ffffff17",
-    "secondaryText": "#D1D5DB",
-    "selectedButton": "#FFFFFF",
-    "selectedButtonText": "#000000",
-    "success": "#10B981",
-    "successSoft": "#064E3B",
-    "surface": "#ffffff17",
-    "warning": "#F97316",
-    "warningSoft": "#78350F"
+    "background": {
+      "canvas": "#000000",
+      "page": "#000000",
+      "search": "#1F2937",
+      "searchActive": "#253244",
+      "searchSelected": "#374151",
+      "surface": "#1F2937",
+      "surfaceHover": "#253244",
+      "surfaceInverse": "#FFFFFF",
+      "surfaceSelected": "#374151"
+    },
+    "border": {
+      "default": "#1F2937",
+      "divider": "rgba(255,255,255,0.08)",
+      "focus": "#374151",
+      "hover": "#253244",
+      "strongHover": "#374151",
+      "subtle": "#1F2937"
+    },
+    "brand": {
+      "border": "#374151",
+      "default": "#FFFFFF",
+      "hover": "#F3F4F6",
+      "ring": "#374151",
+      "surface": "#1F2937"
+    },
+    "button": {
+      "disabledBg": "#1F2937",
+      "disabledText": "#6B7280",
+      "primaryActiveBg": "#E5E7EB",
+      "primaryBg": "#FFFFFF",
+      "primaryHoverBg": "#F3F4F6",
+      "primaryText": "#000000",
+      "secondaryActiveBg": "#253244",
+      "secondaryActiveBorder": "#253244",
+      "secondaryBg": "#1F2937",
+      "secondaryBorder": "#1F2937",
+      "secondaryHoverBorder": "#253244",
+      "secondaryText": "#F9FAFB"
+    },
+    "foreground": {
+      "disabled": "#6B7280",
+      "inverse": "#000000",
+      "link": "#FFFFFF",
+      "linkHover": "#F3F4F6",
+      "primary": "#F9FAFB",
+      "secondary": "#D1D5DB",
+      "tertiary": "#9CA3AF"
+    },
+    "semantic": {
+      "danger": {
+        "bg": "#450A0A",
+        "border": "#450A0A",
+        "buttonActiveBg": "#991B1B",
+        "buttonBg": "#DC2626",
+        "buttonHoverBg": "#EF4444",
+        "fg": "#FCA5A5"
+      },
+      "info": {
+        "bg": "#1F2937",
+        "border": "#1F2937",
+        "fg": "#F9FAFB"
+      },
+      "success": {
+        "bg": "#052E16",
+        "border": "#052E16",
+        "fg": "#86EFAC"
+      },
+      "warning": {
+        "bg": "#431407",
+        "border": "#431407",
+        "fg": "#FDBA74"
+      }
+    }
   },
   typography: {
-    fontFamily: "Roboto",
+    fontFamily: "Fustat",
     headingWeight: 700,
     bodyWeight: 500,
     lineHeight: 1.2,
     raw: {
+      "documentation": {
+        "family": "Inter"
+      },
+      "mono": {
+        "family": "Geist"
+      },
       "product": {
         "bodyWeight": 500,
         "boldWeight": 700,
-        "family": "Roboto",
+        "family": "Fustat",
         "lineHeight": 1.2
       },
-      "scale": {}
+      "scale": {
+        "body1": {
+          "size": 20,
+          "weight": 500
+        },
+        "body2": {
+          "size": 18,
+          "weight": 500
+        },
+        "body3": {
+          "size": 16,
+          "weight": 500
+        },
+        "body4": {
+          "size": 14,
+          "weight": 500
+        },
+        "body5": {
+          "size": 12,
+          "weight": 500
+        },
+        "h1": {
+          "size": 48,
+          "weight": 700
+        },
+        "h2": {
+          "size": 40,
+          "weight": 700
+        },
+        "h3": {
+          "size": 32,
+          "weight": 700
+        },
+        "h4": {
+          "size": 28,
+          "weight": 700
+        },
+        "h5": {
+          "size": 24,
+          "weight": 700
+        }
+      }
     },
   },
   spacing: {
@@ -95,20 +188,33 @@ export const designTokens = {
       32,
       40,
       48,
-      64
+      64,
+      80,
+      96,
+      128
     ]
   },
   radii: {
-    button: 0,
-    buttonLarge: 0,
-    input: 0,
-    badge: 0,
-    card: 0,
+    button: 8,
+    buttonLarge: 8,
+    input: 8,
+    badge: 999,
+    card: 16,
     raw: {
-      "badge": 0,
-      "button": 0,
-      "card": 0,
-      "input": 0
+      "2xl": 24,
+      "badge": 999,
+      "button": 8,
+      "card": 16,
+      "input": 8,
+      "lg": 12,
+      "md": 8,
+      "menu": 12,
+      "modal": 16,
+      "pill": 999,
+      "popover": 16,
+      "sm": 6,
+      "xl": 16,
+      "xs": 4
     },
   },
   borders: {
@@ -118,42 +224,76 @@ export const designTokens = {
     buttonWidth: "0",
     focusRingWidth: "2px",
     raw: {
-      "boxWidth": "0",
-      "buttonWidth": "0",
-      "defaultWidth": "0",
-      "labelWidth": "0"
+      "componentBorders": {
+        "buttonSecondary": "0 solid button.secondaryBorder",
+        "card": "0 solid border.subtle",
+        "input": "0 solid border.default",
+        "tableRow": "0 solid border.subtle"
+      },
+      "defaultWidth": 0,
+      "focusRingWidth": 2
     },
   },
   shadows: {
-    "button": "none",
+    "button": "0 1px 2px 0 rgba(0,0,0,0.05)",
     "card": "none",
-    "drawer": "none",
-    "modal": "none",
-    "popover": "none"
+    "drawer": "0 4px 6px -4px rgba(0,0,0,0.10), 0 10px 15px -3px rgba(0,0,0,0.10)",
+    "modal": "0 4px 6px -4px rgba(0,0,0,0.10), 0 10px 15px -3px rgba(0,0,0,0.10)",
+    "popover": "0 4px 6px -4px rgba(0,0,0,0.10), 0 10px 15px -3px rgba(0,0,0,0.10)"
   },
   motion: {
-    hover: "120ms ease",
-    base: "200ms ease",
-    modal: "320ms ease",
+    hover: "120ms ease-out",
+    base: "200ms ease-out",
+    modal: "320ms ease-out",
     raw: {
-      "base": "200ms ease",
-      "hover": "120ms ease",
-      "modal": "320ms ease"
+      "allowed": [
+        "fade",
+        "slide"
+      ],
+      "base": "200ms ease-out",
+      "disallowed": [
+        "bounce",
+        "spring",
+        "parallax",
+        "scale-shrink"
+      ],
+      "hover": "120ms ease-out",
+      "modal": "320ms ease-out"
     },
   },
   components: {
+    "appShell": {
+      "activeNavBg": "brand.surface",
+      "activeNavText": "brand.hover",
+      "mainBg": "background.canvas",
+      "sidebarBg": "background.surface",
+      "sidebarWidth": 240,
+      "topNavHeight": 64
+    },
     "badge": {
       "fontSize": 12,
+      "fontWeight": 500,
       "paddingX": 10,
       "paddingY": 3,
-      "radius": 0
+      "radius": 999,
+      "tableDotRequired": true
     },
     "button": {
       "sizes": {
         "lg": {
-          "fontSize": 14,
+          "fontSize": 16,
           "height": 40,
           "paddingX": 12
+        },
+        "md": {
+          "fontSize": 14,
+          "height": 32,
+          "paddingX": 12
+        },
+        "sm": {
+          "fontSize": 12,
+          "height": 30,
+          "paddingX": 8
         }
       },
       "states": [
@@ -171,18 +311,61 @@ export const designTokens = {
       ]
     },
     "card": {
-      "border": "colors.border",
+      "border": "border.subtle",
       "padding": [
+        16,
+        20,
         24
       ],
-      "radius": 0,
+      "radius": 16,
       "shadow": "none",
-      "surface": "colors.surface"
+      "surface": "background.surface"
+    },
+    "drawer": {
+      "anchor": "right",
+      "height": "full",
+      "motion": "slide"
     },
     "input": {
+      "activeHeight": 44,
       "height": 40,
+      "helperTextRequired": true,
+      "labelRequired": true,
       "paddingX": 12,
-      "radius": 0
+      "radius": 8,
+      "states": [
+        "default",
+        "active",
+        "filled",
+        "focusFilled",
+        "disabled",
+        "destructive"
+      ]
+    },
+    "modal": {
+      "desktopWidth": 400,
+      "mobilePresentation": "bottom-sheet",
+      "radius": 16
+    },
+    "table": {
+      "cellPaddingX": 18,
+      "cellPaddingY": 12,
+      "headerBg": "background.surface",
+      "headerFont": "documentation",
+      "headerSize": 11,
+      "monoColumns": [
+        "addresses",
+        "timestamps",
+        "ids"
+      ],
+      "rowHoverBg": "background.surfaceHover"
+    },
+    "toast": {
+      "paddingX": 20,
+      "paddingY": 16,
+      "placement": "bottom-right",
+      "radius": 16,
+      "shadow": "popover"
     }
   },
 } as const;
@@ -199,25 +382,25 @@ export const buttonRecipe: Record<DesignButtonVariant, StyleRecipe> = {
     borderRadius: designTokens.radii.button,
     minHeight: 40,
     paddingInline: 12,
-    fontSize: 14,
-    hoverBackground: "#ffffff17",
-    activeBackground: "#ffffff17",
-    disabledBackground: "#ffffff17",
+    fontSize: 16,
+    hoverBackground: "#F3F4F6",
+    activeBackground: "#E5E7EB",
+    disabledBackground: "#1F2937",
     disabledColor: "#6B7280",
     transition: designTokens.motion.hover,
   },
   secondary: {
     background: designTokens.colors.secondaryButton,
     color: designTokens.colors.secondaryButtonText,
-    border: `${designTokens.borders.buttonWidth} solid #ffffff17`,
+    border: `${designTokens.borders.buttonWidth} solid #1F2937`,
     borderRadius: designTokens.radii.button,
     minHeight: 40,
     paddingInline: 12,
-    fontSize: 14,
-    hoverBorderColor: "#ffffff17",
-    activeBackground: "#ffffff17",
-    activeBorderColor: "#ffffff17",
-    disabledBackground: "#ffffff17",
+    fontSize: 16,
+    hoverBorderColor: "#253244",
+    activeBackground: "#253244",
+    activeBorderColor: "#253244",
+    disabledBackground: "#1F2937",
     disabledColor: "#6B7280",
     transition: designTokens.motion.hover,
   },
@@ -228,7 +411,7 @@ export const buttonRecipe: Record<DesignButtonVariant, StyleRecipe> = {
     borderRadius: designTokens.radii.button,
     minHeight: 40,
     paddingInline: 12,
-    fontSize: 14,
+    fontSize: 16,
   },
   dangerPrimary: {
     background: designTokens.colors.danger,
@@ -237,9 +420,9 @@ export const buttonRecipe: Record<DesignButtonVariant, StyleRecipe> = {
     borderRadius: designTokens.radii.button,
     minHeight: 40,
     paddingInline: 12,
-    fontSize: 14,
+    fontSize: 16,
     hoverBackground: "#EF4444",
-    activeBackground: "#EF4444",
+    activeBackground: "#991B1B",
     transition: designTokens.motion.hover,
   },
   dangerSecondary: {
@@ -249,7 +432,7 @@ export const buttonRecipe: Record<DesignButtonVariant, StyleRecipe> = {
     borderRadius: designTokens.radii.button,
     minHeight: 40,
     paddingInline: 12,
-    fontSize: 14,
+    fontSize: 16,
     hoverBackground: designTokens.colors.hover,
     transition: designTokens.motion.hover,
   },
@@ -260,7 +443,7 @@ export const inputRecipe = {
     background: designTokens.colors.secondarySurface,
     color: designTokens.colors.primaryText,
     placeholderColor: designTokens.colors.placeholderText,
-    border: "0 solid #ffffff17",
+    border: "0 solid #1F2937",
     borderRadius: designTokens.radii.input,
     minHeight: 40,
     paddingInline: 12,
@@ -269,10 +452,10 @@ export const inputRecipe = {
   active: {
     borderColor: designTokens.colors.focusRing,
     boxShadow: `0 0 0 ${designTokens.borders.focusRingWidth} ${designTokens.colors.focusRing}`,
-    minHeight: 40,
+    minHeight: 44,
   },
   disabled: {
-    background: "#ffffff17",
+    background: "#1F2937",
     color: "#6B7280",
   },
   destructive: {
@@ -291,29 +474,29 @@ export const badgeRecipe: Record<DesignBadgeVariant, StyleRecipe> = {
 
 export const cardRecipe = {
   default: {
-    background: "#ffffff17",
-    border: "0 solid #ffffff17",
+    background: "#1F2937",
+    border: "0 solid #1F2937",
     borderRadius: designTokens.radii.card,
     boxShadow: "none",
-    padding: 24,
+    padding: 16,
   },
   resource: {
-    background: "#ffffff17",
+    background: "#1F2937",
     border: `${designTokens.borders.boxWidth} solid ${designTokens.colors.headerBorder}`,
     borderRadius: designTokens.radii.card,
-    padding: 24,
+    padding: 16,
   },
 } as const;
 
 export const tableRecipe = {
   header: {
-    background: "#ffffff17",
+    background: "#1F2937",
     color: designTokens.colors.secondaryText,
-    fontSize: 12,
+    fontSize: 11,
   },
   row: {
-    borderBottom: "0 solid #ffffff17",
-    hoverBackground: "#ffffff17",
+    borderBottom: "0 solid #1F2937",
+    hoverBackground: "#253244",
   },
   cell: {
     paddingBlock: 12,
@@ -325,7 +508,7 @@ export const overlayRecipe = {
   modal: {
     background: designTokens.colors.surface,
     border: `${designTokens.borders.boxWidth} solid ${designTokens.colors.border}`,
-    borderRadius: 0,
+    borderRadius: 16,
     boxShadow: designTokens.shadows.modal ?? "none",
     maxWidth: 400,
   },
@@ -337,7 +520,7 @@ export const overlayRecipe = {
   toast: {
     background: designTokens.colors.surface,
     border: `${designTokens.borders.boxWidth} solid ${designTokens.colors.border}`,
-    borderRadius: 0,
+    borderRadius: 16,
     boxShadow: designTokens.shadows.popover ?? "none",
     paddingBlock: 16,
     paddingInline: 20,
@@ -347,10 +530,10 @@ export const overlayRecipe = {
 export const appShellRecipe = {
   sidebarWidth: 240,
   topNavHeight: 64,
-  sidebarBackground: "#ffffff17",
+  sidebarBackground: "#1F2937",
   mainBackground: "#000000",
-  activeNavBackground: "#FFFFFF",
-  activeNavText: "#000000",
+  activeNavBackground: "#1F2937",
+  activeNavText: "#F3F4F6",
 } as const;
 
 export const componentRecipe = {
