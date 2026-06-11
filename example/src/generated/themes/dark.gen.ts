@@ -10,21 +10,21 @@ export const designTheme = {
 export const designTokens = {
   colors: {
     page: "#000000",
-    surface: "#1F2937",
-    secondarySurface: "#1F2937",
-    header: "#1F2937",
-    headerBorder: "#1F2937",
-    footer: "#1F2937",
+    surface: "#1f1f1f",
+    secondarySurface: "#1f1f1f",
+    header: "#000000",
+    headerBorder: "#1f1f1f",
+    footer: "#000000",
     primaryText: "#F9FAFB",
     secondaryText: "#D1D5DB",
     placeholderText: "#9CA3AF",
-    border: "#1F2937",
+    border: "#1f1f1f",
     focusRing: "#374151",
     brand: "#FFFFFF",
     hover: "#253244",
     primaryButton: "#FFFFFF",
     primaryButtonText: "#000000",
-    secondaryButton: "#1F2937",
+    secondaryButton: "#1f1f1f",
     secondaryButtonText: "#F9FAFB",
     selectedButton: "#374151",
     selectedButtonText: "#F3F4F6",
@@ -36,37 +36,37 @@ export const designTokens = {
     warning: "#FDBA74",
     warningSoft: "#431407",
     info: "#F9FAFB",
-    infoSoft: "#1F2937",
+    infoSoft: "#1f1f1f",
   },
   rawColors: {
     "background": {
       "canvas": "#000000",
       "page": "#000000",
-      "search": "#1F2937",
+      "search": "#1f1f1f",
       "searchActive": "#253244",
       "searchSelected": "#374151",
-      "surface": "#1F2937",
+      "surface": "#1f1f1f",
       "surfaceHover": "#253244",
       "surfaceInverse": "#FFFFFF",
       "surfaceSelected": "#374151"
     },
     "border": {
-      "default": "#1F2937",
+      "default": "#1f1f1f",
       "divider": "rgba(255,255,255,0.08)",
       "focus": "#374151",
       "hover": "#253244",
       "strongHover": "#374151",
-      "subtle": "#1F2937"
+      "subtle": "#1f1f1f"
     },
     "brand": {
       "border": "#374151",
       "default": "#FFFFFF",
       "hover": "#F3F4F6",
       "ring": "#374151",
-      "surface": "#1F2937"
+      "surface": "#1f1f1f"
     },
     "button": {
-      "disabledBg": "#1F2937",
+      "disabledBg": "#1f1f1f",
       "disabledText": "#6B7280",
       "primaryActiveBg": "#E5E7EB",
       "primaryBg": "#FFFFFF",
@@ -74,8 +74,8 @@ export const designTokens = {
       "primaryText": "#000000",
       "secondaryActiveBg": "#253244",
       "secondaryActiveBorder": "#253244",
-      "secondaryBg": "#1F2937",
-      "secondaryBorder": "#1F2937",
+      "secondaryBg": "#1f1f1f",
+      "secondaryBorder": "#1f1f1f",
       "secondaryHoverBorder": "#253244",
       "secondaryText": "#F9FAFB"
     },
@@ -98,8 +98,8 @@ export const designTokens = {
         "fg": "#FCA5A5"
       },
       "info": {
-        "bg": "#1F2937",
-        "border": "#1F2937",
+        "bg": "#1f1f1f",
+        "border": "#1f1f1f",
         "fg": "#F9FAFB"
       },
       "success": {
@@ -218,19 +218,19 @@ export const designTokens = {
     },
   },
   borders: {
-    defaultWidth: "0",
-    boxWidth: "0",
-    labelWidth: "0",
-    buttonWidth: "0",
+    defaultWidth: "1px",
+    boxWidth: "1px",
+    labelWidth: "1px",
+    buttonWidth: "1px",
     focusRingWidth: "2px",
     raw: {
       "componentBorders": {
-        "buttonSecondary": "0 solid button.secondaryBorder",
-        "card": "0 solid border.subtle",
-        "input": "0 solid border.default",
-        "tableRow": "0 solid border.subtle"
+        "buttonSecondary": "1px solid button.secondaryBorder",
+        "card": "1px solid border.subtle",
+        "input": "1px solid border.default",
+        "tableRow": "1px solid border.subtle"
       },
-      "defaultWidth": 0,
+      "defaultWidth": 1,
       "focusRingWidth": 2
     },
   },
@@ -385,14 +385,14 @@ export const buttonRecipe: Record<DesignButtonVariant, StyleRecipe> = {
     fontSize: 16,
     hoverBackground: "#F3F4F6",
     activeBackground: "#E5E7EB",
-    disabledBackground: "#1F2937",
+    disabledBackground: "#1f1f1f",
     disabledColor: "#6B7280",
     transition: designTokens.motion.hover,
   },
   secondary: {
     background: designTokens.colors.secondaryButton,
     color: designTokens.colors.secondaryButtonText,
-    border: `${designTokens.borders.buttonWidth} solid #1F2937`,
+    border: `${designTokens.borders.buttonWidth} solid #1f1f1f`,
     borderRadius: designTokens.radii.button,
     minHeight: 40,
     paddingInline: 12,
@@ -400,7 +400,7 @@ export const buttonRecipe: Record<DesignButtonVariant, StyleRecipe> = {
     hoverBorderColor: "#253244",
     activeBackground: "#253244",
     activeBorderColor: "#253244",
-    disabledBackground: "#1F2937",
+    disabledBackground: "#1f1f1f",
     disabledColor: "#6B7280",
     transition: designTokens.motion.hover,
   },
@@ -443,7 +443,7 @@ export const inputRecipe = {
     background: designTokens.colors.secondarySurface,
     color: designTokens.colors.primaryText,
     placeholderColor: designTokens.colors.placeholderText,
-    border: "0 solid #1F2937",
+    border: "1px solid #1f1f1f",
     borderRadius: designTokens.radii.input,
     minHeight: 40,
     paddingInline: 12,
@@ -455,7 +455,7 @@ export const inputRecipe = {
     minHeight: 44,
   },
   disabled: {
-    background: "#1F2937",
+    background: "#1f1f1f",
     color: "#6B7280",
   },
   destructive: {
@@ -474,14 +474,14 @@ export const badgeRecipe: Record<DesignBadgeVariant, StyleRecipe> = {
 
 export const cardRecipe = {
   default: {
-    background: "#1F2937",
-    border: "0 solid #1F2937",
+    background: "#1f1f1f",
+    border: "1px solid #1f1f1f",
     borderRadius: designTokens.radii.card,
     boxShadow: "none",
     padding: 16,
   },
   resource: {
-    background: "#1F2937",
+    background: "#1f1f1f",
     border: `${designTokens.borders.boxWidth} solid ${designTokens.colors.headerBorder}`,
     borderRadius: designTokens.radii.card,
     padding: 16,
@@ -490,12 +490,12 @@ export const cardRecipe = {
 
 export const tableRecipe = {
   header: {
-    background: "#1F2937",
+    background: "#1f1f1f",
     color: designTokens.colors.secondaryText,
     fontSize: 11,
   },
   row: {
-    borderBottom: "0 solid #1F2937",
+    borderBottom: "1px solid #1f1f1f",
     hoverBackground: "#253244",
   },
   cell: {
@@ -530,9 +530,9 @@ export const overlayRecipe = {
 export const appShellRecipe = {
   sidebarWidth: 240,
   topNavHeight: 64,
-  sidebarBackground: "#1F2937",
+  sidebarBackground: "#1f1f1f",
   mainBackground: "#000000",
-  activeNavBackground: "#1F2937",
+  activeNavBackground: "#1f1f1f",
   activeNavText: "#F3F4F6",
 } as const;
 

@@ -116,15 +116,20 @@ type ThemeContextValue = {
   themeVars: CSSProperties;
 };
 
-export const themeOptions: ThemeOption[] = [darkTheme, lightTheme, omsTheme].map(toThemeOption);
+const DEFAULT_THEME_ID = "light";
+
+const generatedThemeModules = [darkTheme, lightTheme, omsTheme] satisfies GeneratedThemeModule[];
+
+export const themeOptions: ThemeOption[] = generatedThemeModules.map(toThemeOption);
 
 const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: any }) {
-  const [selectedThemeId, setSelectedThemeId] = useState(themeOptions[2].id);
+  const defaultTheme = themeOptions.find((option) => option.id === DEFAULT_THEME_ID) ?? themeOptions[0];
+  const [selectedThemeId, setSelectedThemeId] = useState(defaultTheme.id);
   const activeTheme = useMemo(
-    () => themeOptions.find((option) => option.id === selectedThemeId) ?? themeOptions[2],
-    [selectedThemeId],
+    () => themeOptions.find((option) => option.id === selectedThemeId) ?? defaultTheme,
+    [defaultTheme, selectedThemeId],
   );
   const value = useMemo(
     () => ({

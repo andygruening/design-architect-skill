@@ -8,17 +8,17 @@
       "default": "#FFFFFF",
       "hover": "#F3F4F6",
       "ring": "#374151",
-      "surface": "#1F2937",
+      "surface": "#1f1f1f",
       "border": "#374151"
     },
     "background": {
       "page": "#000000",
       "canvas": "#000000",
-      "surface": "#1F2937",
+      "surface": "#1f1f1f",
       "surfaceHover": "#253244",
       "surfaceSelected": "#374151",
       "surfaceInverse": "#FFFFFF",
-      "search": "#1F2937",
+      "search": "#1f1f1f",
       "searchActive": "#253244",
       "searchSelected": "#374151"
     },
@@ -32,8 +32,8 @@
       "linkHover": "#F3F4F6"
     },
     "border": {
-      "default": "#1F2937",
-      "subtle": "#1F2937",
+      "default": "#1f1f1f",
+      "subtle": "#1f1f1f",
       "hover": "#253244",
       "strongHover": "#374151",
       "focus": "#374151",
@@ -44,20 +44,20 @@
       "primaryText": "#000000",
       "primaryHoverBg": "#F3F4F6",
       "primaryActiveBg": "#E5E7EB",
-      "secondaryBg": "#1F2937",
+      "secondaryBg": "#1f1f1f",
       "secondaryText": "#F9FAFB",
-      "secondaryBorder": "#1F2937",
+      "secondaryBorder": "#1f1f1f",
       "secondaryHoverBorder": "#253244",
       "secondaryActiveBg": "#253244",
       "secondaryActiveBorder": "#253244",
-      "disabledBg": "#1F2937",
+      "disabledBg": "#1f1f1f",
       "disabledText": "#6B7280"
     },
     "semantic": {
       "info": {
-        "bg": "#1F2937",
+        "bg": "#1f1f1f",
         "fg": "#F9FAFB",
-        "border": "#1F2937"
+        "border": "#1f1f1f"
       },
       "success": {
         "bg": "#052E16",
@@ -126,13 +126,13 @@
     "menu": 12
   },
   "borders": {
-    "defaultWidth": 0,
+    "defaultWidth": 1,
     "focusRingWidth": 2,
     "componentBorders": {
-      "card": "0 solid border.subtle",
-      "input": "0 solid border.default",
-      "buttonSecondary": "0 solid button.secondaryBorder",
-      "tableRow": "0 solid border.subtle"
+      "card": "1px solid border.subtle",
+      "input": "1px solid border.default",
+      "buttonSecondary": "1px solid button.secondaryBorder",
+      "tableRow": "1px solid border.subtle"
     }
   },
   "shadows": {

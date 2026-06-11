@@ -1,7 +1,7 @@
 import { StrictMode, useState } from "react";
 import { createRoot } from "react-dom/client";
-import { CodexMarketplaceApp } from "./generated/pages/marketplace/codex/main";
-import { WebMarketplaceApp } from "./generated/pages/marketplace/web/main";
+import { CodexMarketplaceApp } from "./generated/pages/marketplace/codex/App";
+import { WebMarketplaceApp } from "./generated/pages/marketplace/web/App";
 import { ThemeProvider, useTheme } from "./generated/themes/ThemeContext";
 import "./styles.css";
 
