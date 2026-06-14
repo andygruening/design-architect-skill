@@ -8,6 +8,22 @@ Design Architect is a Codex skill for generating and applying design-system UI c
 
 The skill uses theme specifications from `themes/` and platform design guidance from `designs/` to produce shared styling files and app design proposals.
 
+## How it works
+
+Design Architect turns a selected theme and platform design spec into generated design-system code, then uses that generated code as the styling boundary for app implementation.
+
+1. **Select the mode.** The skill identifies whether the request is for a new app, an existing project update, theme discovery, a new theme configuration, or a new design spec.
+2. **Read the source material.** It loads the relevant platform guidance from `designs/`, the generic theme guidance from `themes/SPEC.md`, and the selected machine-readable theme JSON from `themes/`.
+3. **Propose changes first.** For app work, the skill inspects the target project and presents a concrete proposal before editing files or running generators.
+4. **Generate platform styling.** After approval, `scripts/generate_components.py` writes the platform-specific styling file into the target project root:
+   - `styling.gen.swift` for SwiftUI
+   - `styling.gen.kt` for Jetpack Compose/Kotlin
+   - `styling.gen.ts` for React TypeScript
+5. **Integrate through generated APIs.** App code should consume generated tokens, components, variants, recipes, and interaction states instead of duplicating colors, spacing, typography, or control styles locally.
+6. **Verify the result.** The generator can run in `--check` mode to confirm generated files are current, and local platform build tools should be used when available.
+
+The selected theme JSON is the machine-readable source of truth for tokens. `themes/SPEC.md` explains how agents should apply those tokens, while `designs/web.md` and `designs/mobile.md` define the platform-level layout and navigation expectations.
+
 ## Repository layout
 
 ```text

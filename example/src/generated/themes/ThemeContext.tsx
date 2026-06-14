@@ -1,262 +1,87 @@
-import { createContext, useContext, useMemo, useState, type CSSProperties } from "react";
-import * as darkTheme from "./dark.gen";
-import * as lightTheme from "./light.gen";
-import * as omsTheme from "./oms.gen";
+import {
+  createContext,
+  type CSSProperties,
+  type ReactNode,
+  useContext,
+  useMemo,
+  useState,
+} from "react";
+import * as dark from "./dark.gen";
+import * as light from "./light.gen";
+import * as oms from "./oms.gen";
 
-type StyleRecipe = Record<string, string | number>;
+export const themes = {
+  light,
+  dark,
+  oms,
+} as const;
 
-type GeneratedThemeModule = {
-  readonly designTheme: {
-    readonly id: string;
-    readonly name: string;
-    readonly description: string;
-  };
-  readonly designTokens: {
-    readonly colors: {
-      readonly page: string;
-      readonly surface: string;
-      readonly secondarySurface: string;
-      readonly header: string;
-      readonly headerBorder: string;
-      readonly footer: string;
-      readonly primaryText: string;
-      readonly secondaryText: string;
-      readonly placeholderText: string;
-      readonly border: string;
-      readonly brand: string;
-      readonly hover: string;
-      readonly primaryButton: string;
-      readonly primaryButtonText: string;
-      readonly secondaryButton: string;
-      readonly secondaryButtonText: string;
-      readonly selectedButton: string;
-      readonly selectedButtonText: string;
-      readonly danger: string;
-      readonly success: string;
-      readonly warning: string;
-      readonly info: string;
-    };
-    readonly typography: {
-      readonly fontFamily: string;
-    };
-    readonly borders: {
-      readonly defaultWidth: string;
-      readonly boxWidth: string;
-      readonly labelWidth: string;
-      readonly buttonWidth: string;
-    };
-    readonly radii: {
-      readonly button: number;
-      readonly badge: number;
-      readonly card: number;
-    };
-  };
-  readonly buttonRecipe: {
-    readonly primary: StyleRecipe;
-    readonly secondary: StyleRecipe;
-    readonly dangerPrimary: StyleRecipe;
-  };
-  readonly componentRecipe: {
-    readonly card: StyleRecipe;
-    readonly input: StyleRecipe;
-    readonly header: StyleRecipe;
-  };
-};
-
-export type ThemeOption = {
-  id: string;
-  name: string;
-  description: string;
-  fontLabel: string;
-  fontFamily: string;
-  tokens: {
-    page: string;
-    surface: string;
-    raised: string;
-    header: string;
-    headerBorder: string;
-    footer: string;
-    text: string;
-    mutedText: string;
-    subtleText: string;
-    border: string;
-    accent: string;
-    hover: string;
-    primaryButton: string;
-    primaryButtonText: string;
-    secondaryButton: string;
-    secondaryButtonText: string;
-    selectedButton: string;
-    selectedButtonText: string;
-    dangerButton: string;
-    dangerButtonText: string;
-    success: string;
-    warning: string;
-    danger: string;
-    info: string;
-    labelText: string;
-    borderWidth: string;
-    boxBorderWidth: string;
-    labelBorderWidth: string;
-    buttonBorderWidth: string;
-    cardBorder: string;
-    inputBorder: string;
-    headerBorderStyle: string;
-    boxRadius: string;
-    labelRadius: string;
-    buttonRadius: string;
-  };
-};
+export type ThemeId = keyof typeof themes;
+export type ThemeModule = (typeof themes)[ThemeId];
 
 type ThemeContextValue = {
-  themeOptions: ThemeOption[];
-  selectedThemeId: string;
-  setSelectedThemeId: (themeId: string) => void;
-  activeTheme: ThemeOption;
-  themeVars: CSSProperties;
+  themeId: ThemeId;
+  theme: ThemeModule;
+  setThemeId: (themeId: ThemeId) => void;
+  themeOptions: Array<{
+    id: ThemeId;
+    name: string;
+    description: string;
+  }>;
+  cssVariables: CSSProperties;
 };
 
-const DEFAULT_THEME_ID = "light";
+const ThemeContext = createContext<ThemeContextValue | null>(null);
 
-const generatedThemeModules = [darkTheme, lightTheme, omsTheme] satisfies GeneratedThemeModule[];
+export function ThemeProvider({ children }: { children: ReactNode }) {
+  const [themeId, setThemeId] = useState<ThemeId>("light");
+  const theme = themes[themeId];
 
-export const themeOptions: ThemeOption[] = generatedThemeModules.map(toThemeOption);
-
-const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
-
-export function ThemeProvider({ children }: { children: any }) {
-  const defaultTheme = themeOptions.find((option) => option.id === DEFAULT_THEME_ID) ?? themeOptions[0];
-  const [selectedThemeId, setSelectedThemeId] = useState(defaultTheme.id);
-  const activeTheme = useMemo(
-    () => themeOptions.find((option) => option.id === selectedThemeId) ?? defaultTheme,
-    [defaultTheme, selectedThemeId],
-  );
-  const value = useMemo(
-    () => ({
-      themeOptions,
-      selectedThemeId,
-      setSelectedThemeId,
-      activeTheme,
-      themeVars: getThemeVars(activeTheme),
-    }),
-    [activeTheme, selectedThemeId],
+  const themeOptions = useMemo(
+    () =>
+      (Object.keys(themes) as ThemeId[]).map((id) => ({
+        id,
+        name: themes[id].designTheme.name,
+        description: themes[id].designTheme.description,
+      })),
+    [],
   );
 
-  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
+  const cssVariables = useMemo(
+    () =>
+      ({
+        "--page": theme.designTokens.colors.page,
+        "--surface": theme.designTokens.colors.surface,
+        "--secondary-surface": theme.designTokens.colors.secondarySurface,
+        "--header": theme.designTokens.colors.header,
+        "--header-border": theme.designTokens.colors.headerBorder,
+        "--footer": theme.designTokens.colors.footer,
+        "--primary-text": theme.designTokens.colors.primaryText,
+        "--secondary-text": theme.designTokens.colors.secondaryText,
+        "--placeholder-text": theme.designTokens.colors.placeholderText,
+        "--border": theme.designTokens.colors.border,
+        "--focus-ring": theme.designTokens.colors.focusRing,
+        "--brand": theme.designTokens.colors.brand,
+        "--hover": theme.designTokens.colors.hover,
+        "--font-family": theme.designTokens.typography.fontFamily,
+        "--motion-hover": theme.designTokens.motion.hover,
+      }) as CSSProperties,
+    [theme],
+  );
+
+  return (
+    <ThemeContext.Provider
+      value={{ themeId, theme, setThemeId, themeOptions, cssVariables }}
+    >
+      {children}
+    </ThemeContext.Provider>
+  );
 }
 
 export function useTheme() {
-  const context = useContext(ThemeContext);
-
-  if (!context) {
+  const value = useContext(ThemeContext);
+  if (!value) {
     throw new Error("useTheme must be used within ThemeProvider");
   }
-
-  return context;
-}
-
-function toThemeOption(themeModule: GeneratedThemeModule): ThemeOption {
-  const { buttonRecipe, componentRecipe, designTheme, designTokens } = themeModule;
-  const { colors } = designTokens;
-
-  return {
-    id: designTheme.id,
-    name: designTheme.name,
-    description: designTheme.description,
-    fontLabel: designTokens.typography.fontFamily,
-    fontFamily: fontStack(designTokens.typography.fontFamily),
-    tokens: {
-      page: colors.page,
-      surface: colors.surface,
-      raised: colors.secondarySurface,
-      header: colors.header,
-      headerBorder: colors.headerBorder,
-      footer: colors.footer,
-      text: colors.primaryText,
-      mutedText: colors.secondaryText,
-      subtleText: colors.placeholderText,
-      border: colors.border,
-      accent: colors.brand,
-      hover: colors.hover,
-      primaryButton: stringValue(buttonRecipe.primary.background),
-      primaryButtonText: stringValue(buttonRecipe.primary.color),
-      secondaryButton: stringValue(buttonRecipe.secondary.background),
-      secondaryButtonText: stringValue(buttonRecipe.secondary.color),
-      selectedButton: colors.selectedButton,
-      selectedButtonText: colors.selectedButtonText,
-      dangerButton: stringValue(buttonRecipe.dangerPrimary.background),
-      dangerButtonText: stringValue(buttonRecipe.dangerPrimary.color),
-      success: colors.success,
-      warning: colors.warning,
-      danger: colors.danger,
-      info: colors.info,
-      labelText: "#FFFFFF",
-      borderWidth: designTokens.borders.defaultWidth,
-      boxBorderWidth: designTokens.borders.boxWidth,
-      labelBorderWidth: designTokens.borders.labelWidth,
-      buttonBorderWidth: designTokens.borders.buttonWidth,
-      cardBorder: stringValue(componentRecipe.card.border),
-      inputBorder: stringValue(componentRecipe.input.border),
-      headerBorderStyle: stringValue(componentRecipe.header.borderBottom),
-      boxRadius: `${designTokens.radii.card}px`,
-      labelRadius: `${designTokens.radii.badge}px`,
-      buttonRadius: `${designTokens.radii.button}px`,
-    },
-  };
-}
-
-function fontStack(fontFamily: string) {
-  if (fontFamily === "Fustat") {
-    return '"Fustat", "Avenir Next", "Trebuchet MS", system-ui, sans-serif';
-  }
-  if (fontFamily === "Roboto") {
-    return '"Roboto", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
-  }
-  return 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
-}
-
-function stringValue(value: string | number) {
-  return String(value);
-}
-
-function getThemeVars(theme: ThemeOption) {
-  return {
-    "--font-family": theme.fontFamily,
-    "--font-label": `"${theme.fontLabel}"`,
-    "--page": theme.tokens.page,
-    "--surface": theme.tokens.surface,
-    "--raised": theme.tokens.raised,
-    "--header": theme.tokens.header,
-    "--header-border": theme.tokens.headerBorder,
-    "--footer": theme.tokens.footer,
-    "--text": theme.tokens.text,
-    "--muted-text": theme.tokens.mutedText,
-    "--subtle-text": theme.tokens.subtleText,
-    "--border": theme.tokens.border,
-    "--accent": theme.tokens.accent,
-    "--hover": theme.tokens.hover,
-    "--primary-button": theme.tokens.primaryButton,
-    "--primary-button-text": theme.tokens.primaryButtonText,
-    "--secondary-button": theme.tokens.secondaryButton,
-    "--secondary-button-text": theme.tokens.secondaryButtonText,
-    "--selected-button": theme.tokens.selectedButton,
-    "--selected-button-text": theme.tokens.selectedButtonText,
-    "--danger-button": theme.tokens.dangerButton,
-    "--danger-button-text": theme.tokens.dangerButtonText,
-    "--success": theme.tokens.success,
-    "--warning": theme.tokens.warning,
-    "--danger": theme.tokens.danger,
-    "--info": theme.tokens.info,
-    "--label-text": theme.tokens.labelText,
-    "--border-width": theme.tokens.borderWidth,
-    "--box-border-width": theme.tokens.boxBorderWidth,
-    "--label-border-width": theme.tokens.labelBorderWidth,
-    "--button-border-width": theme.tokens.buttonBorderWidth,
-    "--card-border": theme.tokens.cardBorder,
-    "--input-border": theme.tokens.inputBorder,
-    "--header-border-style": theme.tokens.headerBorderStyle,
-    "--box-radius": theme.tokens.boxRadius,
-    "--label-radius": theme.tokens.labelRadius,
-    "--button-radius": theme.tokens.buttonRadius,
-  } as CSSProperties;
+  return value;
 }
